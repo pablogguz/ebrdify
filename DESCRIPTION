@@ -1,0 +1,15 @@
+Package: ebrdify
+Title: A handy set of functions to make your data EBRD-friendly
+Version: 0.0.0.9000
+Authors@R: 
+    person("Pablo", "Garcia-Guzman", email = "garciagp@ebrd.com", role = c("aut", "cre"))
+Description: This package provides a simple set of functions to classify countries in your data according to the EBRD groupings. 
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports: 
+    countrycode,
+    dplyr,
+    stats,
+    tidyr
