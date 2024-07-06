@@ -1,0 +1,8 @@
+v v.0.0.0.9000
+d 'EBRDIFY': A set of handy functions to classify EBRD countries of operation
+d 
+d Distribution-Date:   20240706
+d License: MIT
+d 
+F ebrdify.do
+F ebrdify.sthlp
