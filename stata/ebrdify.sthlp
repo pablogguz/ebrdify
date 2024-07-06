@@ -24,7 +24,7 @@ Options
 Remarks
 -------
     The input variable can be in ISO3C, ISO2C, or country name format. The 
-    program uses the `isocodes` package to handle conversions.
+    program uses the `isocodes` package (https://github.com/leojahrens/isocodes) to handle conversions.
 
 Examples
 --------
