@@ -10,7 +10,7 @@ A set of handy functions to classify EBRD countries of operation
 
 ```
 # install.packages("pak")
-pak::pak("pablogguz/whed")
+pak::pak("pablogguz/ebrdify")
 ```
 
 # Stata
