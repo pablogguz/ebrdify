@@ -15,7 +15,6 @@ pak::pak("pablogguz/ebrdify")
 
 # Stata
 
-Coming soon!
-<!-- ```
+```
 net install ebrdify, from(https://raw.githubusercontent.com/pablogguz/ebrdify/master/stata) replace
-``` -->
+```
