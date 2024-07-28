@@ -28,20 +28,18 @@ Remarks
 
 Examples
 --------
-    . input str20 country_code
-    . "KAZ"
-    . "KGZ"
-    . "USA"
-    . "TJK"
-    . "FRA"
-    . "UZB"
-    . end
+    input str20 country_code
+        "KAZ"
+        "KGZ"
+        "USA"
+        "TJK"
+        "FRA"
+        "UZB"
+    end
 
-    . list
+    ebrdify country_code
 
-    . ebrdify country_code
-
-    . list
+    list
 
 Author
 ------

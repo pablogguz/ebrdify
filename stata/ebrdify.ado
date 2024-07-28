@@ -9,6 +9,19 @@ program define ebrdify
         exit 198
     }
     
+	* Ensure variables do not exist
+	capture confirm variable ebrd 
+	if (!_rc) {
+		di as error "Column 'ebrd' already in the dataset. Replacing..."
+		cap drop ebrd
+	}
+	
+	capture confirm variable coo_group 
+	if (!_rc) {
+		di as error "Column 'coo_group' already in the dataset. Replacing..."
+		cap drop coo_group
+	}
+	
     * Capture the input variable name
     local input_var `varlist'
 	
@@ -18,6 +31,8 @@ program define ebrdify
 		if (!_rc) {
 			rename iso3c iso3c_original
 			capture isocodes `input_var', gen(iso3c)
+			replace iso3c = "XKX" if `input_var' == "Kosovo"
+			
 			if (_rc) {
 				di as error "The isocodes package is not installed or encountered an error."
 				di as error "Please install the isocodes package using: net install isocodes, from(""https://raw.githubusercontent.com/leojahrens/isocodes/master"") replace"
@@ -27,6 +42,8 @@ program define ebrdify
 		} 
 		else {
 			capture isocodes `input_var', gen(iso3c)
+			replace iso3c = "XKX" if `input_var' == "Kosovo"
+			
 			if (_rc) {
 				di as error "The isocodes package is not installed or encountered an error."
 				di as error "Please install the isocodes package using: net install isocodes, from(""https://raw.githubusercontent.com/leojahrens/isocodes/master"") replace"
