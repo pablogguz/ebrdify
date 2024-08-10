@@ -4,7 +4,7 @@
 
 # ebrdify <img src="man/figures/logo.png" align="right" height="200" alt="" />
 
-A set of handy functions to classify EBRD countries of operation
+A handy function to classify EBRD countries of operation
 
 # R
 
