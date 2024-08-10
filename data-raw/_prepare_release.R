@@ -35,5 +35,3 @@ pkgdown::build_site()
 # Increment package version ----
 usethis::use_version()
 
-# Zip data ----
-usethis::use_data(whed, overwrite = TRUE)
