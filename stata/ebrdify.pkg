@@ -1,7 +1,7 @@
-v 0.0.0.9000
+v 0.1.0
 d 'EBRDIFY': Create dummy variable for EBRD countries and categorize regions
 d 
-d Distribution-Date:   20240728
+d Distribution-Date:   20240810
 d License: MIT
 d 
 F ebrdify.ado

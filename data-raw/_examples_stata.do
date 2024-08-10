@@ -26,6 +26,10 @@
 		"FRA" "France"
 		"UZB" "Uzbekistan"
 		"KOS" "Kosovo"
+		"BGR" "Bulgaria"
+		"SRB" "Serbia"
+		"MKD" "North Macedonia"
+		"ROU" "Romania"
 	end
 	
 	g ebrd = ""

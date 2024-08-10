@@ -10,18 +10,14 @@ program define ebrdify
     }
     
 	* Ensure variables do not exist
-	capture confirm variable ebrd 
-	if (!_rc) {
-		di as error "Column 'ebrd' already in the dataset. Replacing..."
-		cap drop ebrd
-	}
-	
-	capture confirm variable coo_group 
-	if (!_rc) {
-		di as error "Column 'coo_group' already in the dataset. Replacing..."
-		cap drop coo_group
-	}
-	
+        foreach var in ebrd coo_group eu_ebrd coo_group_alt {
+            capture confirm variable `var'
+            if (!_rc) {
+                di as error "Column '`var'' already in the dataset. Replacing..."
+                cap drop `var'
+            }
+        }
+        
     * Capture the input variable name
     local input_var `varlist'
 	
@@ -72,7 +68,8 @@ program define ebrdify
     local greece "GRC"
     local eastern_europe_caucasus "ARM AZE GEO MDA UKR"
     local south_eastern_europe "ALB BIH BGR XKX MNE MKD ROU SRB"
-    local southern_eastern_mediterranean "EGY JOR LBN MAR TUN PSE TUR"
+    local southern_eastern_mediterranean "EGY JOR LBN MAR TUN PSE"
+    local turkiye "TUR"
 
     * Assign group codes
     foreach country in `central_asia' {
@@ -93,10 +90,55 @@ program define ebrdify
     foreach country in `southern_eastern_mediterranean' {
         replace coo_group = 6 if iso3c == "`country'" `if'
     }
-
+    foreach country in `turkiye' {
+        replace coo_group = 7 if iso3c == "`country'" `if'
+    }
+   
     * Label the coo_group variable
-    label define coo_group 1 "Central Asia" 2 "Central Europe and Baltic States" 3 "Greece" 4 "Eastern Europe and the Caucasus" 5 "South-eastern Europe" 6 "Southern and Eastern Mediterranean"
+    label define coo_group 1 "Central Asia" 2 "Central Europe and Baltic States" 3 "Greece" 4 "Eastern Europe and the Caucasus" 5 "South-eastern Europe" 6 "Southern and Eastern Mediterranean" 7 "Türkiye"
     label values coo_group coo_group
+
+    * Create the eu_ebrd variable
+    generate eu_ebrd = 0 `if'
+    
+    * Define the list of EBRD countries that are also EU members
+    local eu_members "HRV CZE EST HUN LVA LTU POL SVK SVN GRC BGR ROU"
+    
+    * Set eu_ebrd to 1 for EBRD countries that are also EU members
+    foreach country in `eu_members' {
+        replace eu_ebrd = 1 if iso3c == "`country'" `if'
+    }
+ 
+    * Create the coo_group_alt variable
+    generate coo_group_alt = . `if'
+
+ * Define broader categories for coo_group_alt
+    foreach country in `eu_members' {
+        replace coo_group_alt = 1 if iso3c == "`country'" `if'
+    }
+    
+    local former_soviet_union "ARM AZE GEO KAZ KGZ MDA MNG TJK TKM UZB UKR"
+    foreach country in `former_soviet_union' {
+        replace coo_group_alt = 2 if iso3c == "`country'" `if'
+    }
+    
+    local western_balkans "ALB BIH XKX MNE MKD SRB"
+    foreach country in `western_balkans' {
+        replace coo_group_alt = 3 if iso3c == "`country'" `if'
+    }
+    
+    local semed "EGY JOR LBN MAR TUN PSE"
+    foreach country in `semed' {
+        replace coo_group_alt = 4 if iso3c == "`country'" `if'
+    }
+    
+    foreach country in `turkiye' {
+        replace coo_group_alt = 5 if iso3c == "`country'" `if'
+    }
+
+    * Label the coo_group_alt variable
+    label define coo_group_alt 1 "EBRD EU" 2 "Former Soviet Union + Mongolia" 3 "Western Balkans" 4 "Southern and Eastern Mediterranean" 5 "Turkiye"
+    label values coo_group_alt coo_group_alt
 
     * Print unmatched entries
     local unmatched = ""

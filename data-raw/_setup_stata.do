@@ -5,7 +5,7 @@
 cd "C:\Users\pablo\Documents\GitHub\ebrdify\stata"
 // db make
 
-make ebrdify, replace toc pkg version(0.0.0.9000)                           ///
+make ebrdify, replace toc pkg version(0.1.0)                           ///
      license("MIT")                                                          ///
      author("Pablo Garcia-Guzman")                                           ///
      affiliation("")                                                         ///
