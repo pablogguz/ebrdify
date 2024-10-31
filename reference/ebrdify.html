@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ebrdify</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +59,7 @@
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A data frame with four new variables: <code>ebrd</code>, <code>coo_group</code>, <code>eu_ebrd</code>, and <code>coo_group_alt</code>, and prints out any unmatched entries.</p><ul><li><p><code>ebrd</code>: A binary variable indicating whether the country is an EBRD country of operation (1 = EBRD COO, 0 = Non-COO).</p></li>
-<li><p><code>coo_group</code>: A variable classifying the country into specific EBRD country groupins.</p></li>
+<li><p><code>coo_group</code>: A variable classifying the country into specific EBRD country groupings.</p></li>
 <li><p><code>eu_ebrd</code>: A binary variable indicating whether the country is both an EBRD country of operation and an EU member (1 = EU &amp; EBRD, 0 = otherwise).</p></li>
 <li><p><code>coo_group_alt</code>: An alternative classification of countries into broader categories</p></li>
 <li><p><code>ebrd_shareholder</code>: A binary variable indicating whether the country is an EBRD shareholder (1 = Shareholder, 0 = Non-Shareholder).</p></li>
@@ -124,29 +124,30 @@
 <span class="r-in"><span>                                               <span class="st">"United States"</span>,</span></span>
 <span class="r-in"><span>                                               <span class="st">"Canada"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ebrdified_data_fake_names</span> <span class="op">&lt;-</span> <span class="fu">ebrdify</span><span class="op">(</span><span class="va">data_fake_names</span>, <span class="st">"country_name"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Some values were not matched unambiguously: Kosovo, Narnia, Wakanda</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Some values were not matched unambiguously: Narnia, Wakanda</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following entries could not be matched: Narnia, Wakanda</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ebrdified_data_fake_names</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    country_name ebrd                        coo_group eu_ebrd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    Kazakhstan    1                     Central Asia       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       Czechia    1 Central Europe and Baltic States       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        Narnia    0                             &lt;NA&gt;       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        Narnia   NA                             &lt;NA&gt;      NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4       Armenia    1  Eastern Europe and the Caucasus       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5       Albania    1             South-eastern Europe       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       Wakanda    0                             &lt;NA&gt;       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       Wakanda   NA                             &lt;NA&gt;      NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7        Kosovo    1             South-eastern Europe       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8 United States    0                             &lt;NA&gt;       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9        Canada    0                             &lt;NA&gt;       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    coo_group_alt ebrd_shareholder</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 Former Soviet Union + Mongolia                1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                        EU-EBRD                1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           &lt;NA&gt;                0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           &lt;NA&gt;               NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 Former Soviet Union + Mongolia                1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5                Western Balkans                1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                           &lt;NA&gt;                0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                           &lt;NA&gt;               NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7                Western Balkans                1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8                           &lt;NA&gt;                1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9                           &lt;NA&gt;                1</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
