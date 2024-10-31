@@ -6,6 +6,9 @@ devtools::load_all()
 # Documentation ----
 devtools::document()
 
+# Tests ----
+devtools::test()
+
 # Checks ----
 devtools::check()
 
