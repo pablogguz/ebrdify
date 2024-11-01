@@ -9,5 +9,14 @@ devtools::document()
 # Checks ----
 devtools::check()
 
+# Tests ----
+devtools::test()
+
+# Checks ----
+devtools::check()
+
+# Build website
+pkgdown::build_site()
+
 # Package version ----
 usethis::use_version()

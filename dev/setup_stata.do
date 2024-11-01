@@ -7,7 +7,7 @@ if _rc {
 }
 
 // Navigate to the package directory
-cd "C:\Users\pablo\Documents\GitHub\ebrdify\stata"
+cd "C:\Users\\`c(username)'\\Documents\GitHub\ebrdify\stata"
 
 make ebrdify, replace toc pkg version(0.1.0)                                  ///
      license("MIT")                                                           ///

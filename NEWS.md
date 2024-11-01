@@ -1,3 +1,7 @@
+# ebrdify 0.1.1
+
+* Faster `ebrdify()` function, with improved handling of edge cases
+
 # ebrdify 0.1.0
 
 * Fix bug in `ebrdify()` that caused it to fail to recognize Kosovo as an EBRD country
