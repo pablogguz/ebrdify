@@ -1,4 +1,3 @@
-
 cap program drop ebrdify
 program define ebrdify
     syntax varlist(string) [if]
@@ -52,7 +51,7 @@ program define ebrdify
     generate ebrd = 0 `if'
 
     * Define the list of EBRD countries in iso3c format
-    local ebrd_countries "KAZ KGZ MNG TJK TKM UZB HRV CZE EST HUN LVA LTU POL SVK SVN GRC ARM AZE GEO MDA UKR ALB BIH BGR XKX MNE MKD ROU SRB EGY JOR LBN MAR TUN PSE TUR"
+    local ebrd_countries "KAZ KGZ MNG TJK TKM UZB HRV CZE EST HUN LVA LTU POL SVK SVN GRC ARM AZE GEO MDA UKR ALB BIH BGR XKX MNE MKD ROU SRB EGY JOR LBN MAR TUN PSE TUR NGA BEN CIV KEN SEN IRQ"
 
     * Set ebrd to 1 for EBRD countries
     foreach country in `ebrd_countries' {
@@ -70,6 +69,7 @@ program define ebrdify
     local south_eastern_europe "ALB BIH BGR XKX MNE MKD ROU SRB"
     local southern_eastern_mediterranean "EGY JOR LBN MAR TUN PSE"
     local turkiye "TUR"
+    local ssai "NGA BEN CIV KEN SEN IRQ"
 
     * Assign group codes
     foreach country in `central_asia' {
@@ -93,9 +93,12 @@ program define ebrdify
     foreach country in `turkiye' {
         replace coo_group = 7 if iso3c == "`country'" `if'
     }
+    foreach country in `ssai' {
+        replace coo_group = 8 if iso3c == "`country'" `if'
+    }
    
     * Label the coo_group variable
-    label define coo_group 1 "Central Asia" 2 "Central Europe and Baltic States" 3 "Greece" 4 "Eastern Europe and the Caucasus" 5 "South-eastern Europe" 6 "Southern and Eastern Mediterranean" 7 "Türkiye"
+    label define coo_group 1 "Central Asia" 2 "Central Europe and Baltic States" 3 "Greece" 4 "Eastern Europe and the Caucasus" 5 "South-eastern Europe" 6 "Southern and Eastern Mediterranean" 7 "Türkiye" 8 "SSAI"
     label values coo_group coo_group
 
     * Create the eu_ebrd variable
@@ -135,9 +138,13 @@ program define ebrdify
     foreach country in `turkiye' {
         replace coo_group_alt = 5 if iso3c == "`country'" `if'
     }
+    
+    foreach country in `ssai' {
+        replace coo_group_alt = 6 if iso3c == "`country'" `if'
+    }
 
     * Label the coo_group_alt variable
-    label define coo_group_alt 1 "EBRD EU" 2 "Former Soviet Union + Mongolia" 3 "Western Balkans" 4 "Southern and Eastern Mediterranean" 5 "Turkiye"
+    label define coo_group_alt 1 "EBRD EU" 2 "Former Soviet Union + Mongolia" 3 "Western Balkans" 4 "Southern and Eastern Mediterranean" 5 "Turkiye" 6 "SSAI"
     label values coo_group_alt coo_group_alt
 
     * Print unmatched entries

@@ -1,3 +1,7 @@
+# ebrdify 0.2.0
+
+* Included 5 new countries of operation 
+
 # ebrdify 0.1.1
 
 * Faster `ebrdify()` function, with improved handling of edge cases

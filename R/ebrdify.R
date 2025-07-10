@@ -49,7 +49,8 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
                       "POL", "SVK", "SVN", "GRC", "ARM", "AZE",
                       "GEO", "MDA", "UKR", "ALB", "BIH", "BGR",
                       "XKX", "KOS", "MNE", "MKD", "ROU", "SRB", "EGY",
-                      "JOR", "LBN", "MAR", "TUN", "PSE", "TUR")
+                      "JOR", "LBN", "MAR", "TUN", "PSE", "TUR",
+                      "NGA", "BEN", "CIV", "KEN", "SEN", "IRQ")
 
   REGION_MAP <- list(
     "Central Asia" = c("KAZ", "KGZ", "MNG", "TJK", "TKM", "UZB"),
@@ -58,7 +59,8 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
     "Eastern Europe and the Caucasus" = c("ARM", "AZE", "GEO", "MDA", "UKR"),
     "South-eastern Europe" = c("ALB", "BIH", "BGR", "XKX", "MNE", "MKD", "ROU", "SRB"),
     "Southern and Eastern Mediterranean" = c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE"),
-    "T\u00FCrkiye" = "TUR"
+    "T\u00FCrkiye" = "TUR",
+    "SSAI" = c("NGA", "BEN", "CIV", "KEN", "SEN", "IRQ")
   )
 
   EU_MEMBERS <- c("HRV", "CZE", "EST", "HUN", "LVA", "LTU", "POL", "SVK", "SVN", "GRC", "BGR", "ROU")
@@ -68,7 +70,8 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
     "Former Soviet Union + Mongolia" = c("ARM", "AZE", "GEO", "KAZ", "KGZ", "MDA", "MNG", "TJK", "TKM", "UZB", "UKR"),
     "Western Balkans" = c("ALB", "BIH", "XKX", "MNE", "MKD", "SRB"),
     "SEMED" = c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE"),
-    "T\u00FCrkiye" = "TUR"
+    "T\u00FCrkiye" = "TUR",
+    "SSAI" = c("NGA", "BEN", "CIV", "KEN", "SEN", "IRQ")
   )
 
   SHAREHOLDERS <- c("ALB", "DZA", "ARM", "AUS", "AUT", "AZE", "BLR", "BEL", 
