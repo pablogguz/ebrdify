@@ -58,9 +58,9 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
     "Greece" = "GRC",
     "Eastern Europe and the Caucasus" = c("ARM", "AZE", "GEO", "MDA", "UKR"),
     "South-eastern Europe" = c("ALB", "BIH", "BGR", "XKX", "MNE", "MKD", "ROU", "SRB"),
-    "Southern and Eastern Mediterranean" = c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE"),
+    "Southern and Eastern Mediterranean" = c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE", "IRQ"),
     "T\u00FCrkiye" = "TUR",
-    "SSAI" = c("NGA", "BEN", "CIV", "KEN", "SEN", "IRQ")
+    "Sub-Saharan Africa" = c("NGA", "BEN", "CIV", "KEN", "SEN")
   )
 
   EU_MEMBERS <- c("HRV", "CZE", "EST", "HUN", "LVA", "LTU", "POL", "SVK", "SVN", "GRC", "BGR", "ROU")
@@ -69,9 +69,9 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
     "EU-EBRD" = EU_MEMBERS,
     "Former Soviet Union + Mongolia" = c("ARM", "AZE", "GEO", "KAZ", "KGZ", "MDA", "MNG", "TJK", "TKM", "UZB", "UKR"),
     "Western Balkans" = c("ALB", "BIH", "XKX", "MNE", "MKD", "SRB"),
-    "SEMED" = c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE"),
+    "SEMED" = c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE", "IRQ"),
     "T\u00FCrkiye" = "TUR",
-    "SSAI" = c("NGA", "BEN", "CIV", "KEN", "SEN", "IRQ")
+    "Sub-Saharan Africa" = c("NGA", "BEN", "CIV", "KEN", "SEN")
   )
 
   SHAREHOLDERS <- c("ALB", "DZA", "ARM", "AUS", "AUT", "AZE", "BLR", "BEL", 
@@ -83,7 +83,7 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
                     "MAR", "NLD", "NZL", "MKD", "NOR", "POL", "PRT", "ROU", 
                     "RUS", "SMR", "SRB", "SVK", "SVN", "ESP", "SWE", "CHE", 
                     "TJK", "TUN", "TUR", "TKM", "UKR", "ARE", "GBR", "USA", 
-                    "UZB")
+                    "UZB", "NGA", "BEN", "CIV", "KEN", "SEN", "IRQ")
 
 
   # Check for empty input

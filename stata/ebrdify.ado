@@ -67,9 +67,9 @@ program define ebrdify
     local greece "GRC"
     local eastern_europe_caucasus "ARM AZE GEO MDA UKR"
     local south_eastern_europe "ALB BIH BGR XKX MNE MKD ROU SRB"
-    local southern_eastern_mediterranean "EGY JOR LBN MAR TUN PSE"
+    local southern_eastern_mediterranean "EGY JOR LBN MAR TUN PSE IRQ"
     local turkiye "TUR"
-    local ssai "NGA BEN CIV KEN SEN IRQ"
+    local ssai "NGA BEN CIV KEN SEN"
 
     * Assign group codes
     foreach country in `central_asia' {
@@ -98,7 +98,7 @@ program define ebrdify
     }
    
     * Label the coo_group variable
-    label define coo_group 1 "Central Asia" 2 "Central Europe and Baltic States" 3 "Greece" 4 "Eastern Europe and the Caucasus" 5 "South-eastern Europe" 6 "Southern and Eastern Mediterranean" 7 "Türkiye" 8 "SSAI"
+    label define coo_group 1 "Central Asia" 2 "Central Europe and Baltic States" 3 "Greece" 4 "Eastern Europe and the Caucasus" 5 "South-eastern Europe" 6 "Southern and Eastern Mediterranean" 7 "Türkiye" 8 "Sub-Saharan Africa"
     label values coo_group coo_group
 
     * Create the eu_ebrd variable
@@ -144,7 +144,7 @@ program define ebrdify
     }
 
     * Label the coo_group_alt variable
-    label define coo_group_alt 1 "EBRD EU" 2 "Former Soviet Union + Mongolia" 3 "Western Balkans" 4 "Southern and Eastern Mediterranean" 5 "Turkiye" 6 "SSAI"
+    label define coo_group_alt 1 "EBRD EU" 2 "Former Soviet Union + Mongolia" 3 "Western Balkans" 4 "Southern and Eastern Mediterranean" 5 "Turkiye" 6 "Sub-Saharan Africa"
     label values coo_group_alt coo_group_alt
 
     * Print unmatched entries
