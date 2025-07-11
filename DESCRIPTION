@@ -1,6 +1,6 @@
 Package: ebrdify
 Title: A handy function to make your data EBRD-friendly
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: 
     person("Pablo", "Garcia-Guzman", email = "garciagp@ebrd.com", role = c("aut", "cre"))
 Description: This package provides a simple function to classify countries in your data according to the EBRD groupings. 

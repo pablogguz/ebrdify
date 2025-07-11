@@ -9,6 +9,8 @@
         "TJK"
         "FRA"
         "UZB"
+		"IRQ"
+		"SEN"
     end
 
     ebrdify country_code
