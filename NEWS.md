@@ -1,3 +1,7 @@
+# ebrdify 0.3.0
+
+* Moved IRQ to SEMED 
+
 # ebrdify 0.2.0
 
 * Included 5 new countries of operation 
