@@ -51,7 +51,7 @@ program define ebrdify
     generate ebrd = 0 `if'
 
     * Define the list of EBRD countries in iso3c format
-    local ebrd_countries "KAZ KGZ MNG TJK TKM UZB HRV CZE EST HUN LVA LTU POL SVK SVN GRC ARM AZE GEO MDA UKR ALB BIH BGR XKX MNE MKD ROU SRB EGY JOR LBN MAR TUN PSE TUR NGA BEN CIV KEN SEN IRQ"
+    local ebrd_countries "KAZ KGZ MNG TJK TKM UZB HRV CZE EST HUN LVA LTU POL SVK SVN GRC ARM AZE GEO MDA UKR ALB BIH BGR XKX MNE MKD ROU SRB EGY JOR LBN MAR TUN PSE TUR NGA BEN CIV KEN SEN IRQ GHA"
 
     * Set ebrd to 1 for EBRD countries
     foreach country in `ebrd_countries' {

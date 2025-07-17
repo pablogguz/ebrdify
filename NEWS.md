@@ -1,4 +1,8 @@
-# ebrdify 0.3.0
+# ebrdify 0.4.1
+
+* Correct GHA bug
+
+# ebrdify 0.4.0
 
 * Added GHA to SSA 
 

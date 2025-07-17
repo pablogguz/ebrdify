@@ -50,7 +50,7 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
                       "GEO", "MDA", "UKR", "ALB", "BIH", "BGR",
                       "XKX", "KOS", "MNE", "MKD", "ROU", "SRB", "EGY",
                       "JOR", "LBN", "MAR", "TUN", "PSE", "TUR",
-                      "NGA", "BEN", "CIV", "KEN", "SEN", "IRQ")
+                      "NGA", "BEN", "CIV", "KEN", "SEN", "IRQ", "GHA")
 
   REGION_MAP <- list(
     "Central Asia" = c("KAZ", "KGZ", "MNG", "TJK", "TKM", "UZB"),
@@ -71,7 +71,7 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
     "Western Balkans" = c("ALB", "BIH", "XKX", "MNE", "MKD", "SRB"),
     "SEMED" = c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE", "IRQ"),
     "T\u00FCrkiye" = "TUR",
-    "Sub-Saharan Africa" = c("NGA", "BEN", "CIV", "KEN", "SEN")
+    "Sub-Saharan Africa" = c("NGA", "BEN", "CIV", "KEN", "SEN", "GHA")
   )
 
   SHAREHOLDERS <- c("ALB", "DZA", "ARM", "AUS", "AUT", "AZE", "BLR", "BEL", 
