@@ -83,7 +83,7 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
                     "MAR", "NLD", "NZL", "MKD", "NOR", "POL", "PRT", "ROU", 
                     "RUS", "SMR", "SRB", "SVK", "SVN", "ESP", "SWE", "CHE", 
                     "TJK", "TUN", "TUR", "TKM", "UKR", "ARE", "GBR", "USA", 
-                    "UZB", "NGA", "BEN", "CIV", "KEN", "SEN", "IRQ")
+                    "UZB", "NGA", "BEN", "CIV", "KEN", "SEN", "IRQ", "GHA")
 
 
   # Check for empty input
