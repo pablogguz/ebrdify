@@ -69,7 +69,7 @@ program define ebrdify
     local south_eastern_europe "ALB BIH BGR XKX MNE MKD ROU SRB"
     local southern_eastern_mediterranean "EGY JOR LBN MAR TUN PSE IRQ"
     local turkiye "TUR"
-    local ssai "NGA BEN CIV KEN SEN"
+    local ssai "NGA BEN CIV KEN SEN GHA"
 
     * Assign group codes
     foreach country in `central_asia' {

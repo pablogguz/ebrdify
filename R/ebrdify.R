@@ -60,7 +60,7 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
     "South-eastern Europe" = c("ALB", "BIH", "BGR", "XKX", "MNE", "MKD", "ROU", "SRB"),
     "Southern and Eastern Mediterranean" = c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE", "IRQ"),
     "T\u00FCrkiye" = "TUR",
-    "Sub-Saharan Africa" = c("NGA", "BEN", "CIV", "KEN", "SEN")
+    "Sub-Saharan Africa" = c("NGA", "BEN", "CIV", "KEN", "SEN", "GHA")
   )
 
   EU_MEMBERS <- c("HRV", "CZE", "EST", "HUN", "LVA", "LTU", "POL", "SVK", "SVN", "GRC", "BGR", "ROU")

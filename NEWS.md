@@ -1,5 +1,9 @@
 # ebrdify 0.3.0
 
+* Added GHA to SSA 
+
+# ebrdify 0.3.0
+
 * Moved IRQ to SEMED 
 
 # ebrdify 0.2.0
