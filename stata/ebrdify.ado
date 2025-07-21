@@ -130,7 +130,7 @@ program define ebrdify
         replace coo_group_alt = 3 if iso3c == "`country'" `if'
     }
     
-    local semed "EGY JOR LBN MAR TUN PSE"
+    local semed "EGY JOR LBN MAR TUN PSE IRQ"
     foreach country in `semed' {
         replace coo_group_alt = 4 if iso3c == "`country'" `if'
     }
