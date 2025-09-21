@@ -1,3 +1,7 @@
+# ebrdify 0.4.2
+
+* Faster `ebrdify()` function
+
 # ebrdify 0.4.1
 
 * Correct GHA bug

@@ -42,8 +42,8 @@
 #' ebrdified_data_fake_names <- ebrdify(data_fake_names, "country_name")
 #' print(ebrdified_data_fake_names)
 #' 
-ebrdify <- function(data = NULL, var, var_format = NULL) {
-  # Pre-compute all lookup tables for performance - now as named vectors for O(1) lookup
+ebrdify_old <- function(data = NULL, var, var_format = NULL) {
+  # Pre-compute all lookup tables for performance
   EBRD_COUNTRIES <- c("KAZ", "KGZ", "MNG", "TJK", "TKM", "UZB",
                       "HRV", "CZE", "EST", "HUN", "LVA", "LTU",
                       "POL", "SVK", "SVN", "GRC", "ARM", "AZE",
@@ -51,13 +51,29 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
                       "XKX", "KOS", "MNE", "MKD", "ROU", "SRB", "EGY",
                       "JOR", "LBN", "MAR", "TUN", "PSE", "TUR",
                       "NGA", "BEN", "CIV", "KEN", "SEN", "IRQ", "GHA")
-  
-  # Convert to named logical vectors for O(1) lookup
-  EBRD_LOOKUP <- setNames(rep(TRUE, length(EBRD_COUNTRIES)), EBRD_COUNTRIES)
-  
+
+  REGION_MAP <- list(
+    "Central Asia" = c("KAZ", "KGZ", "MNG", "TJK", "TKM", "UZB"),
+    "Central Europe and Baltic States" = c("HRV", "CZE", "EST", "HUN", "LVA", "LTU", "POL", "SVK", "SVN"),
+    "Greece" = "GRC",
+    "Eastern Europe and the Caucasus" = c("ARM", "AZE", "GEO", "MDA", "UKR"),
+    "South-eastern Europe" = c("ALB", "BIH", "BGR", "XKX", "MNE", "MKD", "ROU", "SRB"),
+    "Southern and Eastern Mediterranean" = c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE", "IRQ"),
+    "T\u00FCrkiye" = "TUR",
+    "Sub-Saharan Africa" = c("NGA", "BEN", "CIV", "KEN", "SEN", "GHA")
+  )
+
   EU_MEMBERS <- c("HRV", "CZE", "EST", "HUN", "LVA", "LTU", "POL", "SVK", "SVN", "GRC", "BGR", "ROU")
-  EU_LOOKUP <- setNames(rep(TRUE, length(EU_MEMBERS)), EU_MEMBERS)
-  
+
+  ALT_GROUP_MAP <- list(
+    "EU-EBRD" = EU_MEMBERS,
+    "Former Soviet Union + Mongolia" = c("ARM", "AZE", "GEO", "KAZ", "KGZ", "MDA", "MNG", "TJK", "TKM", "UZB", "UKR"),
+    "Western Balkans" = c("ALB", "BIH", "XKX", "MNE", "MKD", "SRB"),
+    "SEMED" = c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE", "IRQ"),
+    "T\u00FCrkiye" = "TUR",
+    "Sub-Saharan Africa" = c("NGA", "BEN", "CIV", "KEN", "SEN", "GHA")
+  )
+
   SHAREHOLDERS <- c("ALB", "DZA", "ARM", "AUS", "AUT", "AZE", "BLR", "BEL", 
                     "BIH", "BGR", "CAN", "CHN", "HRV", "CYP", "CZE", "DNK", 
                     "EGY", "EST", "EIB", "EUU", "FIN", "FRA", "GEO", "DEU", 
@@ -68,28 +84,7 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
                     "RUS", "SMR", "SRB", "SVK", "SVN", "ESP", "SWE", "CHE", 
                     "TJK", "TUN", "TUR", "TKM", "UKR", "ARE", "GBR", "USA", 
                     "UZB", "NGA", "BEN", "CIV", "KEN", "SEN", "IRQ", "GHA")
-  SHAREHOLDERS_LOOKUP <- setNames(rep(TRUE, length(SHAREHOLDERS)), SHAREHOLDERS)
-  
-  # Pre-compute reverse region mappings for O(1) lookup
-  REGION_LOOKUP <- c(
-    setNames(rep("Central Asia", 6), c("KAZ", "KGZ", "MNG", "TJK", "TKM", "UZB")),
-    setNames(rep("Central Europe and Baltic States", 9), c("HRV", "CZE", "EST", "HUN", "LVA", "LTU", "POL", "SVK", "SVN")),
-    setNames("Greece", "GRC"),
-    setNames(rep("Eastern Europe and the Caucasus", 5), c("ARM", "AZE", "GEO", "MDA", "UKR")),
-    setNames(rep("South-eastern Europe", 8), c("ALB", "BIH", "BGR", "XKX", "MNE", "MKD", "ROU", "SRB")),
-    setNames(rep("Southern and Eastern Mediterranean", 7), c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE", "IRQ")),
-    setNames("T\u00FCrkiye", "TUR"),
-    setNames(rep("Sub-Saharan Africa", 6), c("NGA", "BEN", "CIV", "KEN", "SEN", "GHA"))
-  )
-  
-  ALT_GROUP_LOOKUP <- c(
-    setNames(rep("EU-EBRD", length(EU_MEMBERS)), EU_MEMBERS),
-    setNames(rep("Former Soviet Union + Mongolia", 11), c("ARM", "AZE", "GEO", "KAZ", "KGZ", "MDA", "MNG", "TJK", "TKM", "UZB", "UKR")),
-    setNames(rep("Western Balkans", 6), c("ALB", "BIH", "XKX", "MNE", "MKD", "SRB")),
-    setNames(rep("SEMED", 7), c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE", "IRQ")),
-    setNames("T\u00FCrkiye", "TUR"),
-    setNames(rep("Sub-Saharan Africa", 6), c("NGA", "BEN", "CIV", "KEN", "SEN", "GHA"))
-  )
+
 
   # Check for empty input
   if ((!is.null(data) && nrow(data) == 0) || (is.null(data) && length(var) == 0)) {
@@ -124,17 +119,13 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
   
   # Handle all-NA case
   if (all(is.na(var_data))) {
-    result <- data.frame(
+    return(data.frame(
       ebrd = rep(NA_integer_, length(var_data)),
       coo_group = rep(NA_character_, length(var_data)),
       eu_ebrd = rep(NA_integer_, length(var_data)),
       coo_group_alt = rep(NA_character_, length(var_data)),
       ebrd_shareholder = rep(NA_integer_, length(var_data))
-    )
-    if (!is.null(data)) {
-      result <- cbind(data, result)
-    }
-    return(result)
+    ))
   }
   
   # Fast format detection
@@ -153,37 +144,47 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
     var_data <- toupper(var_data)
   }
   
-  # Optimize countrycode conversion - only convert unique values
+  # Vectorized conversion
   if (var_format != "iso3c") {
-    unique_values <- unique(var_data[!is.na(var_data)])
-    unique_converted <- countrycode::countrycode(unique_values, origin = var_format, destination = "iso3c", 
-                                               custom_match = c(Kosovo = "XKX", "KOSOVO" = "XKX", 
-                                                                "Republic of Kosovo" = "XKX", "XK" = "XKX"))
-    # Create lookup table for conversion
-    conversion_lookup <- setNames(unique_converted, unique_values)
-    var_converted <- conversion_lookup[var_data]
+    var_converted <- countrycode::countrycode(var_data, origin = var_format, destination = "iso3c", 
+                                            custom_match = c(Kosovo = "XKX", "KOSOVO" = "XKX", 
+                                                           "Republic of Kosovo" = "XKX", "XK" = "XKX"))
   } else {
     var_converted <- var_data
   }
   
   # Report unmatched entries once
-  unmatched_mask <- !is.na(var_data) & is.na(var_converted)
-  if (any(unmatched_mask)) {
-    unmatched <- unique(var_data[unmatched_mask])
+  unmatched <- unique(var_data[!is.na(var_data) & is.na(var_converted)])
+  if (length(unmatched) > 0) {
     message("The following entries could not be matched: ", 
             paste(unmatched, collapse = ", "))
   }
   
-  # Vectorized lookups using pre-computed tables
-  valid_entries <- !is.na(var_converted)
-  
+  # Initialize result with NAs
   result <- data.frame(
-    ebrd = ifelse(valid_entries, as.integer(!is.na(EBRD_LOOKUP[var_converted])), NA_integer_),
-    coo_group = REGION_LOOKUP[var_converted],
-    eu_ebrd = ifelse(valid_entries, as.integer(!is.na(EU_LOOKUP[var_converted])), NA_integer_),
-    coo_group_alt = ALT_GROUP_LOOKUP[var_converted],
-    ebrd_shareholder = ifelse(valid_entries, as.integer(!is.na(SHAREHOLDERS_LOOKUP[var_converted])), NA_integer_)
+    ebrd = rep(NA_integer_, length(var_converted)),
+    coo_group = rep(NA_character_, length(var_converted)),
+    eu_ebrd = rep(NA_integer_, length(var_converted)),
+    coo_group_alt = rep(NA_character_, length(var_converted)),
+    ebrd_shareholder = rep(NA_integer_, length(var_converted))
   )
+  
+  # Set values only for valid entries (non-NA and non-empty)
+  valid_entries <- !is.na(var_converted)
+  result$ebrd[valid_entries] <- as.integer(var_converted[valid_entries] %in% EBRD_COUNTRIES)
+  result$eu_ebrd[valid_entries] <- as.integer(var_converted[valid_entries] %in% EU_MEMBERS)
+  result$ebrd_shareholder[valid_entries] <- as.integer(var_converted[valid_entries] %in% SHAREHOLDERS)
+  
+  # Set region groupings only for valid entries
+  for (region in names(REGION_MAP)) {
+    matches <- var_converted %in% REGION_MAP[[region]]
+    result$coo_group[matches] <- region
+  }
+  
+  for (group in names(ALT_GROUP_MAP)) {
+    matches <- var_converted %in% ALT_GROUP_MAP[[group]]
+    result$coo_group_alt[matches] <- group
+  }
   
   if (!is.null(data)) {
     result <- cbind(data, result)
