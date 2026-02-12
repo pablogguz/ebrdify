@@ -20,12 +20,12 @@
 #' @export
 #' @examples
 #' # Using a data frame
-#' data <- data.frame(country_code = c("KAZ", "CZE", "GRC", "ARM", "ALB", "EGY", "USA", "CAN"))
+#' data <- data.frame(country_code = c("KAZ", "CZE", "NGA", "ARM", "ALB", "EGY", "USA", "CAN"))
 #' ebrdified_data <- ebrdify(data, "country_code", var_format = "iso3c")
 #' print(ebrdified_data)
 #'
 #' # Using a vector
-#' country_vector <- c("KAZ", "CZE", "GRC", "ARM", "ALB", "EGY", "USA", "CAN")
+#' country_vector <- c("KAZ", "CZE", "NGA", "ARM", "ALB", "EGY", "USA", "CAN")
 #' ebrdified_vector <- ebrdify(var = country_vector, var_format = "iso3c")
 #' print(ebrdified_vector)
 #'
@@ -46,7 +46,7 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
   # Pre-compute all lookup tables for performance - now as named vectors for O(1) lookup
   EBRD_COUNTRIES <- c("KAZ", "KGZ", "MNG", "TJK", "TKM", "UZB",
                       "HRV", "CZE", "EST", "HUN", "LVA", "LTU",
-                      "POL", "SVK", "SVN", "GRC", "ARM", "AZE",
+                      "POL", "SVK", "SVN", "ARM", "AZE",
                       "GEO", "MDA", "UKR", "ALB", "BIH", "BGR",
                       "XKX", "KOS", "MNE", "MKD", "ROU", "SRB", "EGY",
                       "JOR", "LBN", "MAR", "TUN", "PSE", "TUR",
@@ -55,7 +55,7 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
   # Convert to named logical vectors for O(1) lookup
   EBRD_LOOKUP <- setNames(rep(TRUE, length(EBRD_COUNTRIES)), EBRD_COUNTRIES)
   
-  EU_MEMBERS <- c("HRV", "CZE", "EST", "HUN", "LVA", "LTU", "POL", "SVK", "SVN", "GRC", "BGR", "ROU")
+  EU_MEMBERS <- c("HRV", "CZE", "EST", "HUN", "LVA", "LTU", "POL", "SVK", "SVN", "BGR", "ROU")
   EU_LOOKUP <- setNames(rep(TRUE, length(EU_MEMBERS)), EU_MEMBERS)
   
   SHAREHOLDERS <- c("ALB", "DZA", "ARM", "AUS", "AUT", "AZE", "BLR", "BEL", 
@@ -74,7 +74,6 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
   REGION_LOOKUP <- c(
     setNames(rep("Central Asia", 6), c("KAZ", "KGZ", "MNG", "TJK", "TKM", "UZB")),
     setNames(rep("Central Europe and Baltic States", 9), c("HRV", "CZE", "EST", "HUN", "LVA", "LTU", "POL", "SVK", "SVN")),
-    setNames("Greece", "GRC"),
     setNames(rep("Eastern Europe and the Caucasus", 5), c("ARM", "AZE", "GEO", "MDA", "UKR")),
     setNames(rep("South-eastern Europe", 8), c("ALB", "BIH", "BGR", "XKX", "MNE", "MKD", "ROU", "SRB")),
     setNames(rep("Southern and Eastern Mediterranean", 7), c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE", "IRQ")),

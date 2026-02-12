@@ -7,10 +7,10 @@ test_that("setup test data works", {
   # Basic test data
   expect_no_error({
     test_data <- data.frame(
-      country_code = c("KAZ", "CZE", "GRC", "ARM", "ALB", "EGY", "USA", "CAN"),
+      country_code = c("KAZ", "CZE", "NGA", "ARM", "ALB", "EGY", "USA", "CAN"),
       stringsAsFactors = FALSE
     )
-    test_vector <- c("KAZ", "CZE", "GRC", "ARM", "ALB", "EGY", "USA", "CAN")
+    test_vector <- c("KAZ", "CZE", "NGA", "ARM", "ALB", "EGY", "USA", "CAN")
   })
 })
 
@@ -33,7 +33,7 @@ test_that("function accepts different input formats", {
 # Test EBRD country classification
 test_that("EBRD country classification is correct", {
   test_data <- data.frame(
-    country_code = c("KAZ", "USA", "GRC", "TUR"),
+    country_code = c("KAZ", "USA", "NGA", "TUR"),
     stringsAsFactors = FALSE
   )
   result <- ebrdify(test_data, "country_code", "iso3c")
@@ -41,19 +41,19 @@ test_that("EBRD country classification is correct", {
   # Test EBRD countries are correctly identified
   expect_equal(result$ebrd[result$country_code == "KAZ"], 1)
   expect_equal(result$ebrd[result$country_code == "USA"], 0)
-  expect_equal(result$ebrd[result$country_code == "GRC"], 1)
+  expect_equal(result$ebrd[result$country_code == "NGA"], 1)
   expect_equal(result$ebrd[result$country_code == "TUR"], 1)
 })
 
 # Test EU membership
 test_that("EU membership is correctly identified", {
   test_data <- data.frame(
-    country_code = c("GRC", "TUR", "POL", "USA"),
+    country_code = c("HRV", "TUR", "POL", "USA"),
     stringsAsFactors = FALSE
   )
   result <- ebrdify(test_data, "country_code", "iso3c")
-  
-  expect_equal(result$eu_ebrd[result$country_code == "GRC"], 1)
+
+  expect_equal(result$eu_ebrd[result$country_code == "HRV"], 1)
   expect_equal(result$eu_ebrd[result$country_code == "TUR"], 0)
   expect_equal(result$eu_ebrd[result$country_code == "POL"], 1)
   expect_equal(result$eu_ebrd[result$country_code == "USA"], 0)
@@ -62,7 +62,7 @@ test_that("EU membership is correctly identified", {
 # Test regional groupings
 test_that("regional groupings are correct", {
   test_data <- data.frame(
-    country_code = c("KAZ", "HUN", "GRC", "ARM", "ALB", "EGY", "TUR"),
+    country_code = c("KAZ", "HUN", "NGA", "ARM", "ALB", "EGY", "TUR"),
     stringsAsFactors = FALSE
   )
   result <- ebrdify(test_data, "country_code", "iso3c")
@@ -70,7 +70,7 @@ test_that("regional groupings are correct", {
   # Test specific regional assignments
   expect_equal(result$coo_group[result$country_code == "KAZ"], "Central Asia")
   expect_equal(result$coo_group[result$country_code == "HUN"], "Central Europe and Baltic States")
-  expect_equal(result$coo_group[result$country_code == "GRC"], "Greece")
+  expect_equal(result$coo_group[result$country_code == "NGA"], "Sub-Saharan Africa")
   expect_equal(result$coo_group[result$country_code == "ARM"], "Eastern Europe and the Caucasus")
   expect_equal(result$coo_group[result$country_code == "ALB"], "South-eastern Europe")
   expect_equal(result$coo_group[result$country_code == "EGY"], "Southern and Eastern Mediterranean")

@@ -51,7 +51,7 @@ program define ebrdify
     generate ebrd = 0 `if'
 
     * Define the list of EBRD countries in iso3c format
-    local ebrd_countries "KAZ KGZ MNG TJK TKM UZB HRV CZE EST HUN LVA LTU POL SVK SVN GRC ARM AZE GEO MDA UKR ALB BIH BGR XKX MNE MKD ROU SRB EGY JOR LBN MAR TUN PSE TUR NGA BEN CIV KEN SEN IRQ GHA"
+    local ebrd_countries "KAZ KGZ MNG TJK TKM UZB HRV CZE EST HUN LVA LTU POL SVK SVN ARM AZE GEO MDA UKR ALB BIH BGR XKX MNE MKD ROU SRB EGY JOR LBN MAR TUN PSE TUR NGA BEN CIV KEN SEN IRQ GHA"
 
     * Set ebrd to 1 for EBRD countries
     foreach country in `ebrd_countries' {
@@ -64,7 +64,6 @@ program define ebrdify
     * Define groups of countries
     local central_asia "KAZ KGZ MNG TJK TKM UZB"
     local central_europe_baltic "HRV CZE EST HUN LVA LTU POL SVK SVN"
-    local greece "GRC"
     local eastern_europe_caucasus "ARM AZE GEO MDA UKR"
     local south_eastern_europe "ALB BIH BGR XKX MNE MKD ROU SRB"
     local southern_eastern_mediterranean "EGY JOR LBN MAR TUN PSE IRQ"
@@ -78,34 +77,31 @@ program define ebrdify
     foreach country in `central_europe_baltic' {
         replace coo_group = 2 if iso3c == "`country'" `if'
     }
-    foreach country in `greece' {
+    foreach country in `eastern_europe_caucasus' {
         replace coo_group = 3 if iso3c == "`country'" `if'
     }
-    foreach country in `eastern_europe_caucasus' {
+    foreach country in `south_eastern_europe' {
         replace coo_group = 4 if iso3c == "`country'" `if'
     }
-    foreach country in `south_eastern_europe' {
+    foreach country in `southern_eastern_mediterranean' {
         replace coo_group = 5 if iso3c == "`country'" `if'
     }
-    foreach country in `southern_eastern_mediterranean' {
+    foreach country in `turkiye' {
         replace coo_group = 6 if iso3c == "`country'" `if'
     }
-    foreach country in `turkiye' {
-        replace coo_group = 7 if iso3c == "`country'" `if'
-    }
     foreach country in `ssai' {
-        replace coo_group = 8 if iso3c == "`country'" `if'
+        replace coo_group = 7 if iso3c == "`country'" `if'
     }
    
     * Label the coo_group variable
-    label define coo_group 1 "Central Asia" 2 "Central Europe and Baltic States" 3 "Greece" 4 "Eastern Europe and the Caucasus" 5 "South-eastern Europe" 6 "Southern and Eastern Mediterranean" 7 "Türkiye" 8 "Sub-Saharan Africa"
+    label define coo_group 1 "Central Asia" 2 "Central Europe and Baltic States" 3 "Eastern Europe and the Caucasus" 4 "South-eastern Europe" 5 "Southern and Eastern Mediterranean" 6 "Türkiye" 7 "Sub-Saharan Africa"
     label values coo_group coo_group
 
     * Create the eu_ebrd variable
     generate eu_ebrd = 0 `if'
     
     * Define the list of EBRD countries that are also EU members
-    local eu_members "HRV CZE EST HUN LVA LTU POL SVK SVN GRC BGR ROU"
+    local eu_members "HRV CZE EST HUN LVA LTU POL SVK SVN BGR ROU"
     
     * Set eu_ebrd to 1 for EBRD countries that are also EU members
     foreach country in `eu_members' {
