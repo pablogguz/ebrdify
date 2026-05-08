@@ -28,18 +28,18 @@ This function classifies countries based on their EBRD status, region, and EU me
 }
 \examples{
 # Using a data frame
-data <- data.frame(country_code = c("KAZ", "CZE", "NGA", "ARM", "ALB", "EGY", "USA", "CAN"))
+data <- data.frame(country_code = c("KAZ", "HRV", "NGA", "ARM", "ALB", "EGY", "USA", "CAN"))
 ebrdified_data <- ebrdify(data, "country_code", var_format = "iso3c")
 print(ebrdified_data)
 
 # Using a vector
-country_vector <- c("KAZ", "CZE", "NGA", "ARM", "ALB", "EGY", "USA", "CAN")
+country_vector <- c("KAZ", "HRV", "NGA", "ARM", "ALB", "EGY", "USA", "CAN")
 ebrdified_vector <- ebrdify(var = country_vector, var_format = "iso3c")
 print(ebrdified_vector)
 
 # Using a data frame with fake country names
 data_fake_names <- data.frame(country_name = c("Kazakhstan",
-                                               "Czechia",
+                                               "Croatia",
                                                "Narnia",
                                                "Armenia",
                                                "Albania",

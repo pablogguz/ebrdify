@@ -51,7 +51,7 @@ program define ebrdify
     generate ebrd = 0 `if'
 
     * Define the list of EBRD countries in iso3c format
-    local ebrd_countries "KAZ KGZ MNG TJK TKM UZB HRV CZE EST HUN LVA LTU POL SVK SVN ARM AZE GEO MDA UKR ALB BIH BGR XKX MNE MKD ROU SRB EGY JOR LBN MAR TUN PSE TUR NGA BEN CIV KEN SEN IRQ GHA"
+    local ebrd_countries "KAZ KGZ MNG TJK TKM UZB HRV EST HUN LVA LTU POL SVK SVN ARM AZE GEO MDA UKR ALB BIH BGR XKX MNE MKD ROU SRB EGY JOR LBN MAR TUN PSE TUR NGA BEN CIV KEN SEN IRQ GHA"
 
     * Set ebrd to 1 for EBRD countries
     foreach country in `ebrd_countries' {
@@ -63,7 +63,7 @@ program define ebrdify
 
     * Define groups of countries
     local central_asia "KAZ KGZ MNG TJK TKM UZB"
-    local central_europe_baltic "HRV CZE EST HUN LVA LTU POL SVK SVN"
+    local central_europe_baltic "HRV EST HUN LVA LTU POL SVK SVN"
     local eastern_europe_caucasus "ARM AZE GEO MDA UKR"
     local south_eastern_europe "ALB BIH BGR XKX MNE MKD ROU SRB"
     local southern_eastern_mediterranean "EGY JOR LBN MAR TUN PSE IRQ"
@@ -101,7 +101,7 @@ program define ebrdify
     generate eu_ebrd = 0 `if'
     
     * Define the list of EBRD countries that are also EU members
-    local eu_members "HRV CZE EST HUN LVA LTU POL SVK SVN BGR ROU"
+    local eu_members "HRV EST HUN LVA LTU POL SVK SVN BGR ROU"
     
     * Set eu_ebrd to 1 for EBRD countries that are also EU members
     foreach country in `eu_members' {

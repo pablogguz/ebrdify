@@ -7,10 +7,10 @@ test_that("setup test data works", {
   # Basic test data
   expect_no_error({
     test_data <- data.frame(
-      country_code = c("KAZ", "CZE", "NGA", "ARM", "ALB", "EGY", "USA", "CAN"),
+      country_code = c("KAZ", "HRV", "NGA", "ARM", "ALB", "EGY", "USA", "CAN"),
       stringsAsFactors = FALSE
     )
-    test_vector <- c("KAZ", "CZE", "NGA", "ARM", "ALB", "EGY", "USA", "CAN")
+    test_vector <- c("KAZ", "HRV", "NGA", "ARM", "ALB", "EGY", "USA", "CAN")
   })
 })
 
