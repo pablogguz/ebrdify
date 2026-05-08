@@ -52,12 +52,12 @@ and `coo_group_alt`, and prints out any unmatched entries.
 
 ``` r
 # Using a data frame
-data <- data.frame(country_code = c("KAZ", "CZE", "NGA", "ARM", "ALB", "EGY", "USA", "CAN"))
+data <- data.frame(country_code = c("KAZ", "HRV", "NGA", "ARM", "ALB", "EGY", "USA", "CAN"))
 ebrdified_data <- ebrdify(data, "country_code", var_format = "iso3c")
 print(ebrdified_data)
 #>   country_code ebrd                          coo_group eu_ebrd
 #> 1          KAZ    1                       Central Asia       0
-#> 2          CZE    1   Central Europe and Baltic States       1
+#> 2          HRV    1   Central Europe and Baltic States       1
 #> 3          NGA    1                 Sub-Saharan Africa       0
 #> 4          ARM    1    Eastern Europe and the Caucasus       0
 #> 5          ALB    1               South-eastern Europe       0
@@ -75,7 +75,7 @@ print(ebrdified_data)
 #> 8                           <NA>                1
 
 # Using a vector
-country_vector <- c("KAZ", "CZE", "NGA", "ARM", "ALB", "EGY", "USA", "CAN")
+country_vector <- c("KAZ", "HRV", "NGA", "ARM", "ALB", "EGY", "USA", "CAN")
 ebrdified_vector <- ebrdify(var = country_vector, var_format = "iso3c")
 print(ebrdified_vector)
 #>   ebrd                          coo_group eu_ebrd
@@ -99,7 +99,7 @@ print(ebrdified_vector)
 
 # Using a data frame with fake country names
 data_fake_names <- data.frame(country_name = c("Kazakhstan",
-                                               "Czechia",
+                                               "Croatia",
                                                "Narnia",
                                                "Armenia",
                                                "Albania",
@@ -109,11 +109,12 @@ data_fake_names <- data.frame(country_name = c("Kazakhstan",
                                                "Canada"))
 ebrdified_data_fake_names <- ebrdify(data_fake_names, "country_name")
 #> Warning: Some values were not matched unambiguously: Narnia, Wakanda
+#> To fix unmatched values, please use the `custom_match` argument. If you think the default matching rules should be improved, please file an issue at https://github.com/vincentarelbundock/countrycode/issues
 #> The following entries could not be matched: Narnia, Wakanda
 print(ebrdified_data_fake_names)
 #>                country_name ebrd                        coo_group eu_ebrd
 #> Kazakhstan       Kazakhstan    1                     Central Asia       0
-#> Czechia             Czechia    1 Central Europe and Baltic States       1
+#> Croatia             Croatia    1 Central Europe and Baltic States       1
 #> Narnia               Narnia   NA                             <NA>      NA
 #> Armenia             Armenia    1  Eastern Europe and the Caucasus       0
 #> Albania             Albania    1             South-eastern Europe       0
@@ -123,7 +124,7 @@ print(ebrdified_data_fake_names)
 #> Canada               Canada    0                             <NA>       0
 #>                                coo_group_alt ebrd_shareholder
 #> Kazakhstan    Former Soviet Union + Mongolia                1
-#> Czechia                              EU-EBRD                1
+#> Croatia                              EU-EBRD                1
 #> Narnia                                  <NA>               NA
 #> Armenia       Former Soviet Union + Mongolia                1
 #> Albania                      Western Balkans                1
