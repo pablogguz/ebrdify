@@ -191,3 +191,68 @@ test_that("edge cases are handled correctly", {
   expect_true(is.na(empty_result$ebrd[1]))
   expect_equal(empty_result$ebrd[2], 1)
 })
+
+# Kosovo's EBRD code "KOS" should classify like the ISO3 "XKX"
+test_that("Kosovo classifies from either KOS or XKX as iso3c", {
+  for (code in c("KOS", "XKX")) {
+    result <- ebrdify(var = code, var_format = "iso3c")
+    expect_equal(result$ebrd, 1)
+    expect_equal(result$coo_group, "South-eastern Europe")
+    expect_equal(result$coo_group_alt, "Western Balkans")
+    expect_equal(result$ebrd_shareholder, 1)
+  }
+})
+
+# Czechia and Greece were removed as EBRD economies (0.4.3 / 0.4.4)
+test_that("Czechia and Greece are not EBRD economies", {
+  result <- ebrdify(var = c("CZE", "GRC"), var_format = "iso3c")
+  expect_equal(result$ebrd, c(0, 0))
+  expect_true(all(is.na(result$coo_group)))
+  expect_true(all(is.na(result$coo_group_alt)))
+  expect_equal(result$eu_ebrd, c(0, 0))
+  # ...but they remain EBRD shareholders
+  expect_equal(result$ebrd_shareholder, c(1, 1))
+})
+
+# Russia, Belarus and Cyprus must never be EBRD economies
+test_that("Russia, Belarus and Cyprus are excluded as economies", {
+  result <- ebrdify(var = c("RUS", "BLR", "CYP"), var_format = "iso3c")
+  expect_equal(result$ebrd, c(0, 0, 0))
+  expect_true(all(is.na(result$coo_group)))
+  # but all three are shareholders
+  expect_equal(result$ebrd_shareholder, c(1, 1, 1))
+})
+
+# Every EBRD economy is fully classified
+test_that("all 41 EBRD economies are completely classified", {
+  codes <- list_ebrd("iso3c")
+  expect_length(codes, 41)
+
+  result <- ebrdify(var = codes, var_format = "iso3c")
+  expect_true(all(result$ebrd == 1))
+  expect_false(any(is.na(result$coo_group)))
+  expect_false(any(is.na(result$coo_group_alt)))
+  expect_false(any(is.na(result$eu_ebrd)))
+})
+
+# BGR/ROU sit in South-eastern Europe traditionally but EU-EBRD in the alt scheme
+test_that("traditional and alternative groupings can differ", {
+  result <- ebrdify(var = c("BGR", "ROU"), var_format = "iso3c")
+  expect_equal(result$coo_group, c("South-eastern Europe", "South-eastern Europe"))
+  expect_equal(result$coo_group_alt, c("EU-EBRD", "EU-EBRD"))
+})
+
+# Output should not carry stray row names from the named-vector lookups
+test_that("result has clean row names", {
+  result <- ebrdify(var = c("KAZ", "USA"), var_format = "iso3c")
+  expect_equal(row.names(result), c("1", "2"))
+})
+
+# Auto-detection picks iso2c / iso3c / country.name correctly
+test_that("format auto-detection works", {
+  expect_equal(ebrdify(var = c("KZ", "PL"))$ebrd, c(1, 1))     # iso2c
+  expect_equal(ebrdify(var = c("KAZ", "POL"))$ebrd, c(1, 1))   # iso3c
+  expect_equal(
+    ebrdify(var = c("Kazakhstan", "Poland"))$ebrd, c(1, 1)     # country.name
+  )
+})

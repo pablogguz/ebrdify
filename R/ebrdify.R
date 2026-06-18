@@ -1,192 +1,127 @@
 # ebrdify.R
 
-#' EBRD Country Classification
+#' Classify countries into EBRD groupings
 #'
-#' This function classifies countries based on their EBRD status, region, and EU membership.
+#' Tags each country in a dataset with its EBRD status and regional groupings,
+#' following the official EBRD / Transition Report classification (Annex I of the
+#' OCE TR style guide). Country identifiers may be ISO3 codes, ISO2 codes, or
+#' country names, and the format is auto-detected when not supplied.
 #'
-#' @param data A data frame containing the variable to classify, or NULL if using a vector input.
-#' @param var A string specifying the name of the variable in `data` that contains the country codes, or a vector of country codes.
-#' @param var_format A string specifying the format of the country codes in `var`. It can be "country.name", "iso3c", or "iso2c". If NULL, the function will attempt to detect the format.
-#' @return A data frame with four new variables: `ebrd`, `coo_group`, `eu_ebrd`, and `coo_group_alt`, and prints out any unmatched entries.
-#' - `ebrd`: A binary variable indicating whether the country is an EBRD country of operation (1 = EBRD COO, 0 = Non-COO).
-#' - `coo_group`: A variable classifying the country into specific EBRD country groupings.
-#' - `eu_ebrd`: A binary variable indicating whether the country is both an EBRD country of operation and an EU member (1 = EU & EBRD, 0 = otherwise).
-#' - `coo_group_alt`: An alternative classification of countries into broader categories
-#' - `ebrd_shareholder`: A binary variable indicating whether the country is an EBRD shareholder (1 = Shareholder, 0 = Non-Shareholder).
+#' @param data A data frame containing the country variable, or `NULL` when
+#'   passing a vector via `var`.
+#' @param var Either the name of the column in `data` holding the country
+#'   identifiers, or — when `data` is `NULL` — a vector of country identifiers.
+#' @param var_format Format of the identifiers: `"country.name"`, `"iso3c"`, or
+#'   `"iso2c"`. If `NULL` (default) the format is auto-detected.
+#' @return A data frame with five appended columns. When `data` is supplied the
+#'   original columns are kept and these are added; otherwise a data frame with
+#'   just these columns (one row per input element) is returned.
+#'   \describe{
+#'     \item{`ebrd`}{`1` if an EBRD country of operation, `0` otherwise, `NA`
+#'       if the identifier could not be matched.}
+#'     \item{`coo_group`}{Traditional EBRD regional grouping, or `NA`.}
+#'     \item{`eu_ebrd`}{`1` if both an EBRD economy and an EU member, else `0`
+#'       (`NA` if unmatched).}
+#'     \item{`coo_group_alt`}{Alternative EBRD grouping, or `NA`.}
+#'     \item{`ebrd_shareholder`}{`1` if an EBRD shareholder, else `0` (`NA` if
+#'       unmatched).}
+#'   }
+#'   Unmatched identifiers are reported once via [message()].
+#' @seealso [list_ebrd()] for the full list of EBRD economies and [canonise()]
+#'   to standardise country names.
 #' @importFrom countrycode countrycode
-#' @importFrom dplyr mutate if_else recode case_when select
-#' @importFrom tidyr replace_na
-#' @importFrom stats na.omit
 #' @export
 #' @examples
 #' # Using a data frame
-#' data <- data.frame(country_code = c("KAZ", "HRV", "NGA", "ARM", "ALB", "EGY", "USA", "CAN"))
-#' ebrdified_data <- ebrdify(data, "country_code", var_format = "iso3c")
-#' print(ebrdified_data)
+#' df <- data.frame(country_code = c("KAZ", "HRV", "NGA", "ARM", "USA"))
+#' ebrdify(df, "country_code", var_format = "iso3c")
 #'
-#' # Using a vector
-#' country_vector <- c("KAZ", "HRV", "NGA", "ARM", "ALB", "EGY", "USA", "CAN")
-#' ebrdified_vector <- ebrdify(var = country_vector, var_format = "iso3c")
-#' print(ebrdified_vector)
-#'
-#' # Using a data frame with fake country names
-#' data_fake_names <- data.frame(country_name = c("Kazakhstan",
-#'                                                "Croatia",
-#'                                                "Narnia",
-#'                                                "Armenia",
-#'                                                "Albania",
-#'                                                "Wakanda",
-#'                                                "Kosovo",
-#'                                                "United States",
-#'                                                "Canada"))
-#' ebrdified_data_fake_names <- ebrdify(data_fake_names, "country_name")
-#' print(ebrdified_data_fake_names)
-#' 
+#' # Using a vector, with auto-detected format
+#' ebrdify(var = c("Kazakhstan", "Croatia", "Narnia", "United States"))
 ebrdify <- function(data = NULL, var, var_format = NULL) {
-  # Pre-compute all lookup tables for performance - now as named vectors for O(1) lookup
-  EBRD_COUNTRIES <- c("KAZ", "KGZ", "MNG", "TJK", "TKM", "UZB",
-                      "HRV", "EST", "HUN", "LVA", "LTU",
-                      "POL", "SVK", "SVN", "ARM", "AZE",
-                      "GEO", "MDA", "UKR", "ALB", "BIH", "BGR",
-                      "XKX", "KOS", "MNE", "MKD", "ROU", "SRB", "EGY",
-                      "JOR", "LBN", "MAR", "TUN", "PSE", "TUR",
-                      "NGA", "BEN", "CIV", "KEN", "SEN", "IRQ", "GHA")
-  
-  # Convert to named logical vectors for O(1) lookup
-  EBRD_LOOKUP <- setNames(rep(TRUE, length(EBRD_COUNTRIES)), EBRD_COUNTRIES)
-  
-  EU_MEMBERS <- c("HRV", "EST", "HUN", "LVA", "LTU", "POL", "SVK", "SVN", "BGR", "ROU")
-  EU_LOOKUP <- setNames(rep(TRUE, length(EU_MEMBERS)), EU_MEMBERS)
-  
-  SHAREHOLDERS <- c("ALB", "DZA", "ARM", "AUS", "AUT", "AZE", "BLR", "BEL", 
-                    "BIH", "BGR", "CAN", "CHN", "HRV", "CYP", "CZE", "DNK", 
-                    "EGY", "EST", "EIB", "EUU", "FIN", "FRA", "GEO", "DEU", 
-                    "GRC", "HUN", "ISL", "IND", "IRL", "ISR", "ITA", "JPN", 
-                    "JOR", "KAZ", "KOR", "XKX", "KGZ", "LVA", "LBN", "LBY", 
-                    "LIE", "LTU", "LUX", "MLT", "MEX", "MDA", "MNG", "MNE", 
-                    "MAR", "NLD", "NZL", "MKD", "NOR", "POL", "PRT", "ROU", 
-                    "RUS", "SMR", "SRB", "SVK", "SVN", "ESP", "SWE", "CHE", 
-                    "TJK", "TUN", "TUR", "TKM", "UKR", "ARE", "GBR", "USA", 
-                    "UZB", "NGA", "BEN", "CIV", "KEN", "SEN", "IRQ", "GHA")
-  SHAREHOLDERS_LOOKUP <- setNames(rep(TRUE, length(SHAREHOLDERS)), SHAREHOLDERS)
-  
-  # Pre-compute reverse region mappings for O(1) lookup
-  REGION_LOOKUP <- c(
-    setNames(rep("Central Asia", 6), c("KAZ", "KGZ", "MNG", "TJK", "TKM", "UZB")),
-    setNames(rep("Central Europe and Baltic States", 8), c("HRV", "EST", "HUN", "LVA", "LTU", "POL", "SVK", "SVN")),
-    setNames(rep("Eastern Europe and the Caucasus", 5), c("ARM", "AZE", "GEO", "MDA", "UKR")),
-    setNames(rep("South-eastern Europe", 8), c("ALB", "BIH", "BGR", "XKX", "MNE", "MKD", "ROU", "SRB")),
-    setNames(rep("Southern and Eastern Mediterranean", 7), c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE", "IRQ")),
-    setNames("T\u00FCrkiye", "TUR"),
-    setNames(rep("Sub-Saharan Africa", 6), c("NGA", "BEN", "CIV", "KEN", "SEN", "GHA"))
-  )
-  
-  ALT_GROUP_LOOKUP <- c(
-    setNames(rep("EU-EBRD", length(EU_MEMBERS)), EU_MEMBERS),
-    setNames(rep("Former Soviet Union + Mongolia", 11), c("ARM", "AZE", "GEO", "KAZ", "KGZ", "MDA", "MNG", "TJK", "TKM", "UZB", "UKR")),
-    setNames(rep("Western Balkans", 6), c("ALB", "BIH", "XKX", "MNE", "MKD", "SRB")),
-    setNames(rep("SEMED", 7), c("EGY", "JOR", "LBN", "MAR", "TUN", "PSE", "IRQ")),
-    setNames("T\u00FCrkiye", "TUR"),
-    setNames(rep("Sub-Saharan Africa", 6), c("NGA", "BEN", "CIV", "KEN", "SEN", "GHA"))
-  )
-
-  # Check for empty input
-  if ((!is.null(data) && nrow(data) == 0) || (is.null(data) && length(var) == 0)) {
-    stop("Input cannot be empty")
-  }
-
-  # Check for column overwriting
   new_cols <- c("ebrd", "coo_group", "eu_ebrd", "coo_group_alt", "ebrd_shareholder")
-  
+
+  # Resolve the identifier vector and warn about columns/names we will overwrite.
   if (!is.null(data)) {
-    existing_columns <- intersect(names(data), new_cols)
-    if (length(existing_columns) > 0) {
-      warning("The following columns will be overwritten: ", 
-              paste(existing_columns, collapse = ", "))
+    if (nrow(data) == 0L) {
+      stop("Input cannot be empty")
+    }
+    clash <- intersect(names(data), new_cols)
+    if (length(clash) > 0L) {
+      warning("The following columns will be overwritten: ",
+              paste(clash, collapse = ", "))
     }
     var_data <- data[[var]]
   } else {
-    if (!is.null(names(var))) {
-      overlapping_names <- intersect(names(var), new_cols)
-      if (length(overlapping_names) > 0) {
-        warning("Some elements in the vector are named: ", 
-                paste(overlapping_names, collapse = ", "), 
-                " and will be overwritten.")
-      }
+    if (length(var) == 0L) {
+      stop("Input cannot be empty")
+    }
+    clash <- intersect(names(var), new_cols)
+    if (length(clash) > 0L) {
+      warning("Some elements in the vector are named: ",
+              paste(clash, collapse = ", "), " and will be overwritten.")
     }
     var_data <- var
   }
-  
-  # Convert to character and handle empty strings
-  var_data <- as.character(var_data)
-  var_data[var_data == ""] <- NA_character_
-  
-  # Handle all-NA case
+
+  var_data <- .clean_input(var_data)
+  n <- length(var_data)
+
+  # All-missing input: return the right shape without touching countrycode.
   if (all(is.na(var_data))) {
     result <- data.frame(
-      ebrd = rep(NA_integer_, length(var_data)),
-      coo_group = rep(NA_character_, length(var_data)),
-      eu_ebrd = rep(NA_integer_, length(var_data)),
-      coo_group_alt = rep(NA_character_, length(var_data)),
-      ebrd_shareholder = rep(NA_integer_, length(var_data))
+      ebrd = rep(NA_integer_, n),
+      coo_group = rep(NA_character_, n),
+      eu_ebrd = rep(NA_integer_, n),
+      coo_group_alt = rep(NA_character_, n),
+      ebrd_shareholder = rep(NA_integer_, n),
+      stringsAsFactors = FALSE,
+      row.names = NULL
     )
     if (!is.null(data)) {
       result <- cbind(data, result)
     }
     return(result)
   }
-  
-  # Fast format detection
+
   if (is.null(var_format)) {
-    non_empty <- var_data[!is.na(var_data) & nchar(var_data) > 0]
-    char_lengths <- unique(nchar(non_empty))
-    var_format <- if (length(char_lengths) == 1) {
-      if (char_lengths == 3) "iso3c"
-      else if (char_lengths == 2) "iso2c"
-      else "country.name"
-    } else "country.name"
+    var_format <- .detect_format(var_data)
   }
-  
-  # Convert to uppercase for iso codes
-  if (var_format %in% c("iso3c", "iso2c")) {
-    var_data <- toupper(var_data)
+
+  iso <- .to_iso3c(var_data, var_format)
+
+  # Report anything that could not be resolved to an ISO3 code, once.
+  unmatched <- !is.na(var_data) & is.na(iso)
+  if (any(unmatched)) {
+    message("The following entries could not be matched: ",
+            paste(unique(var_data[unmatched]), collapse = ", "))
   }
-  
-  # Optimize countrycode conversion - only convert unique values
-  if (var_format != "iso3c") {
-    unique_values <- unique(var_data[!is.na(var_data)])
-    unique_converted <- countrycode::countrycode(unique_values, origin = var_format, destination = "iso3c", 
-                                               custom_match = c(Kosovo = "XKX", "KOSOVO" = "XKX", 
-                                                                "Republic of Kosovo" = "XKX", "XK" = "XKX"))
-    # Create lookup table for conversion
-    conversion_lookup <- setNames(unique_converted, unique_values)
-    var_converted <- conversion_lookup[var_data]
-  } else {
-    var_converted <- var_data
-  }
-  
-  # Report unmatched entries once
-  unmatched_mask <- !is.na(var_data) & is.na(var_converted)
-  if (any(unmatched_mask)) {
-    unmatched <- unique(var_data[unmatched_mask])
-    message("The following entries could not be matched: ", 
-            paste(unmatched, collapse = ", "))
-  }
-  
-  # Vectorized lookups using pre-computed tables
-  valid_entries <- !is.na(var_converted)
-  
+
+  valid <- !is.na(iso)
+
+  # Logical lookups return TRUE / NA; turn into 1/0 and restore NA for unmatched.
+  ebrd <- as.integer(!is.na(.ebrd_lookup[iso]))
+  ebrd[!valid] <- NA_integer_
+  eu <- as.integer(!is.na(.eu_lookup[iso]))
+  eu[!valid] <- NA_integer_
+  shareholder <- as.integer(!is.na(.shareholder_lookup[iso]))
+  shareholder[!valid] <- NA_integer_
+
+  # row.names = NULL stops data.frame() from adopting the lookups' (NA-bearing)
+  # names as row names, so the character columns can stay named — no unname pass.
   result <- data.frame(
-    ebrd = ifelse(valid_entries, as.integer(!is.na(EBRD_LOOKUP[var_converted])), NA_integer_),
-    coo_group = REGION_LOOKUP[var_converted],
-    eu_ebrd = ifelse(valid_entries, as.integer(!is.na(EU_LOOKUP[var_converted])), NA_integer_),
-    coo_group_alt = ALT_GROUP_LOOKUP[var_converted],
-    ebrd_shareholder = ifelse(valid_entries, as.integer(!is.na(SHAREHOLDERS_LOOKUP[var_converted])), NA_integer_)
+    ebrd = ebrd,
+    coo_group = .region_lookup[iso],
+    eu_ebrd = eu,
+    coo_group_alt = .alt_lookup[iso],
+    ebrd_shareholder = shareholder,
+    stringsAsFactors = FALSE,
+    row.names = NULL
   )
-  
+
   if (!is.null(data)) {
     result <- cbind(data, result)
   }
-  
-  return(result)
+
+  result
 }

@@ -2,52 +2,51 @@
 % Please edit documentation in R/ebrdify.R
 \name{ebrdify}
 \alias{ebrdify}
-\title{EBRD Country Classification}
+\title{Classify countries into EBRD groupings}
 \usage{
 ebrdify(data = NULL, var, var_format = NULL)
 }
 \arguments{
-\item{data}{A data frame containing the variable to classify, or NULL if using a vector input.}
+\item{data}{A data frame containing the country variable, or \code{NULL} when
+passing a vector via \code{var}.}
 
-\item{var}{A string specifying the name of the variable in \code{data} that contains the country codes, or a vector of country codes.}
+\item{var}{Either the name of the column in \code{data} holding the country
+identifiers, or — when \code{data} is \code{NULL} — a vector of country identifiers.}
 
-\item{var_format}{A string specifying the format of the country codes in \code{var}. It can be "country.name", "iso3c", or "iso2c". If NULL, the function will attempt to detect the format.}
+\item{var_format}{Format of the identifiers: \code{"country.name"}, \code{"iso3c"}, or
+\code{"iso2c"}. If \code{NULL} (default) the format is auto-detected.}
 }
 \value{
-A data frame with four new variables: \code{ebrd}, \code{coo_group}, \code{eu_ebrd}, and \code{coo_group_alt}, and prints out any unmatched entries.
-\itemize{
-\item \code{ebrd}: A binary variable indicating whether the country is an EBRD country of operation (1 = EBRD COO, 0 = Non-COO).
-\item \code{coo_group}: A variable classifying the country into specific EBRD country groupings.
-\item \code{eu_ebrd}: A binary variable indicating whether the country is both an EBRD country of operation and an EU member (1 = EU & EBRD, 0 = otherwise).
-\item \code{coo_group_alt}: An alternative classification of countries into broader categories
-\item \code{ebrd_shareholder}: A binary variable indicating whether the country is an EBRD shareholder (1 = Shareholder, 0 = Non-Shareholder).
+A data frame with five appended columns. When \code{data} is supplied the
+original columns are kept and these are added; otherwise a data frame with
+just these columns (one row per input element) is returned.
+\describe{
+\item{\code{ebrd}}{\code{1} if an EBRD country of operation, \code{0} otherwise, \code{NA}
+if the identifier could not be matched.}
+\item{\code{coo_group}}{Traditional EBRD regional grouping, or \code{NA}.}
+\item{\code{eu_ebrd}}{\code{1} if both an EBRD economy and an EU member, else \code{0}
+(\code{NA} if unmatched).}
+\item{\code{coo_group_alt}}{Alternative EBRD grouping, or \code{NA}.}
+\item{\code{ebrd_shareholder}}{\code{1} if an EBRD shareholder, else \code{0} (\code{NA} if
+unmatched).}
 }
+Unmatched identifiers are reported once via \code{\link[=message]{message()}}.
 }
 \description{
-This function classifies countries based on their EBRD status, region, and EU membership.
+Tags each country in a dataset with its EBRD status and regional groupings,
+following the official EBRD / Transition Report classification (Annex I of the
+OCE TR style guide). Country identifiers may be ISO3 codes, ISO2 codes, or
+country names, and the format is auto-detected when not supplied.
 }
 \examples{
 # Using a data frame
-data <- data.frame(country_code = c("KAZ", "HRV", "NGA", "ARM", "ALB", "EGY", "USA", "CAN"))
-ebrdified_data <- ebrdify(data, "country_code", var_format = "iso3c")
-print(ebrdified_data)
+df <- data.frame(country_code = c("KAZ", "HRV", "NGA", "ARM", "USA"))
+ebrdify(df, "country_code", var_format = "iso3c")
 
-# Using a vector
-country_vector <- c("KAZ", "HRV", "NGA", "ARM", "ALB", "EGY", "USA", "CAN")
-ebrdified_vector <- ebrdify(var = country_vector, var_format = "iso3c")
-print(ebrdified_vector)
-
-# Using a data frame with fake country names
-data_fake_names <- data.frame(country_name = c("Kazakhstan",
-                                               "Croatia",
-                                               "Narnia",
-                                               "Armenia",
-                                               "Albania",
-                                               "Wakanda",
-                                               "Kosovo",
-                                               "United States",
-                                               "Canada"))
-ebrdified_data_fake_names <- ebrdify(data_fake_names, "country_name")
-print(ebrdified_data_fake_names)
-
+# Using a vector, with auto-detected format
+ebrdify(var = c("Kazakhstan", "Croatia", "Narnia", "United States"))
+}
+\seealso{
+\code{\link[=list_ebrd]{list_ebrd()}} for the full list of EBRD economies and \code{\link[=canonise]{canonise()}}
+to standardise country names.
 }
