@@ -1,7 +1,10 @@
-# EBRD Country Classification
+# Classify countries into EBRD groupings
 
-This function classifies countries based on their EBRD status, region,
-and EU membership.
+Tags each country in a dataset with its EBRD status and regional
+groupings, following the official EBRD / Transition Report
+classification (Annex I of the OCE TR style guide). Country identifiers
+may be ISO3 codes, ISO2 codes, or country names, and the format is
+auto-detected when not supplied.
 
 ## Usage
 
@@ -13,123 +16,88 @@ ebrdify(data = NULL, var, var_format = NULL)
 
 - data:
 
-  A data frame containing the variable to classify, or NULL if using a
-  vector input.
+  A data frame containing the country variable, or `NULL` when passing a
+  vector via `var`.
 
 - var:
 
-  A string specifying the name of the variable in `data` that contains
-  the country codes, or a vector of country codes.
+  Either the name of the column in `data` holding the country
+  identifiers, or — when `data` is `NULL` — a vector of country
+  identifiers.
 
 - var_format:
 
-  A string specifying the format of the country codes in `var`. It can
-  be "country.name", "iso3c", or "iso2c". If NULL, the function will
-  attempt to detect the format.
+  Format of the identifiers: `"country.name"`, `"iso3c"`, or `"iso2c"`.
+  If `NULL` (default) the format is auto-detected.
 
 ## Value
 
-A data frame with four new variables: `ebrd`, `coo_group`, `eu_ebrd`,
-and `coo_group_alt`, and prints out any unmatched entries.
+A data frame with five appended columns. When `data` is supplied the
+original columns are kept and these are added; otherwise a data frame
+with just these columns (one row per input element) is returned.
 
-- `ebrd`: A binary variable indicating whether the country is an EBRD
-  country of operation (1 = EBRD COO, 0 = Non-COO).
+- `ebrd`:
 
-- `coo_group`: A variable classifying the country into specific EBRD
-  country groupings.
+  `1` if an EBRD country of operation, `0` otherwise, `NA` if the
+  identifier could not be matched.
 
-- `eu_ebrd`: A binary variable indicating whether the country is both an
-  EBRD country of operation and an EU member (1 = EU & EBRD, 0 =
-  otherwise).
+- `coo_group`:
 
-- `coo_group_alt`: An alternative classification of countries into
-  broader categories
+  Traditional EBRD regional grouping, or `NA`.
 
-- `ebrd_shareholder`: A binary variable indicating whether the country
-  is an EBRD shareholder (1 = Shareholder, 0 = Non-Shareholder).
+- `eu_ebrd`:
+
+  `1` if both an EBRD economy and an EU member, else `0` (`NA` if
+  unmatched).
+
+- `coo_group_alt`:
+
+  Alternative EBRD grouping, or `NA`.
+
+- `ebrd_shareholder`:
+
+  `1` if an EBRD shareholder, else `0` (`NA` if unmatched).
+
+Unmatched identifiers are reported once via
+[`message()`](https://rdrr.io/r/base/message.html).
+
+## See also
+
+[`list_ebrd()`](https://pablogguz.github.io/ebrdify/reference/list_ebrd.md)
+for the full list of EBRD economies and
+[`canonise()`](https://pablogguz.github.io/ebrdify/reference/canonise.md)
+to standardise country names.
 
 ## Examples
 
 ``` r
 # Using a data frame
-data <- data.frame(country_code = c("KAZ", "HRV", "NGA", "ARM", "ALB", "EGY", "USA", "CAN"))
-ebrdified_data <- ebrdify(data, "country_code", var_format = "iso3c")
-print(ebrdified_data)
-#>   country_code ebrd                          coo_group eu_ebrd
-#> 1          KAZ    1                       Central Asia       0
-#> 2          HRV    1   Central Europe and Baltic States       1
-#> 3          NGA    1                 Sub-Saharan Africa       0
-#> 4          ARM    1    Eastern Europe and the Caucasus       0
-#> 5          ALB    1               South-eastern Europe       0
-#> 6          EGY    1 Southern and Eastern Mediterranean       0
-#> 7          USA    0                               <NA>       0
-#> 8          CAN    0                               <NA>       0
+df <- data.frame(country_code = c("KAZ", "HRV", "NGA", "ARM", "USA"))
+ebrdify(df, "country_code", var_format = "iso3c")
+#>   country_code ebrd                        coo_group eu_ebrd
+#> 1          KAZ    1                     Central Asia       0
+#> 2          HRV    1 Central Europe and Baltic States       1
+#> 3          NGA    1               Sub-Saharan Africa       0
+#> 4          ARM    1  Eastern Europe and the Caucasus       0
+#> 5          USA    0                             <NA>       0
 #>                    coo_group_alt ebrd_shareholder
 #> 1 Former Soviet Union + Mongolia                1
 #> 2                        EU-EBRD                1
 #> 3             Sub-Saharan Africa                1
 #> 4 Former Soviet Union + Mongolia                1
-#> 5                Western Balkans                1
-#> 6                          SEMED                1
-#> 7                           <NA>                1
-#> 8                           <NA>                1
+#> 5                           <NA>                1
 
-# Using a vector
-country_vector <- c("KAZ", "HRV", "NGA", "ARM", "ALB", "EGY", "USA", "CAN")
-ebrdified_vector <- ebrdify(var = country_vector, var_format = "iso3c")
-print(ebrdified_vector)
-#>   ebrd                          coo_group eu_ebrd
-#> 1    1                       Central Asia       0
-#> 2    1   Central Europe and Baltic States       1
-#> 3    1                 Sub-Saharan Africa       0
-#> 4    1    Eastern Europe and the Caucasus       0
-#> 5    1               South-eastern Europe       0
-#> 6    1 Southern and Eastern Mediterranean       0
-#> 7    0                               <NA>       0
-#> 8    0                               <NA>       0
-#>                    coo_group_alt ebrd_shareholder
-#> 1 Former Soviet Union + Mongolia                1
-#> 2                        EU-EBRD                1
-#> 3             Sub-Saharan Africa                1
-#> 4 Former Soviet Union + Mongolia                1
-#> 5                Western Balkans                1
-#> 6                          SEMED                1
-#> 7                           <NA>                1
-#> 8                           <NA>                1
-
-# Using a data frame with fake country names
-data_fake_names <- data.frame(country_name = c("Kazakhstan",
-                                               "Croatia",
-                                               "Narnia",
-                                               "Armenia",
-                                               "Albania",
-                                               "Wakanda",
-                                               "Kosovo",
-                                               "United States",
-                                               "Canada"))
-ebrdified_data_fake_names <- ebrdify(data_fake_names, "country_name")
-#> Warning: Some values were not matched unambiguously: Narnia, Wakanda
-#> To fix unmatched values, please use the `custom_match` argument. If you think the default matching rules should be improved, please file an issue at https://github.com/vincentarelbundock/countrycode/issues
-#> The following entries could not be matched: Narnia, Wakanda
-print(ebrdified_data_fake_names)
-#>                country_name ebrd                        coo_group eu_ebrd
-#> Kazakhstan       Kazakhstan    1                     Central Asia       0
-#> Croatia             Croatia    1 Central Europe and Baltic States       1
-#> Narnia               Narnia   NA                             <NA>      NA
-#> Armenia             Armenia    1  Eastern Europe and the Caucasus       0
-#> Albania             Albania    1             South-eastern Europe       0
-#> Wakanda             Wakanda   NA                             <NA>      NA
-#> Kosovo               Kosovo    1             South-eastern Europe       0
-#> United States United States    0                             <NA>       0
-#> Canada               Canada    0                             <NA>       0
-#>                                coo_group_alt ebrd_shareholder
-#> Kazakhstan    Former Soviet Union + Mongolia                1
-#> Croatia                              EU-EBRD                1
-#> Narnia                                  <NA>               NA
-#> Armenia       Former Soviet Union + Mongolia                1
-#> Albania                      Western Balkans                1
-#> Wakanda                                 <NA>               NA
-#> Kosovo                       Western Balkans                1
-#> United States                           <NA>                1
-#> Canada                                  <NA>                1
+# Using a vector, with auto-detected format
+ebrdify(var = c("Kazakhstan", "Croatia", "Narnia", "United States"))
+#> The following entries could not be matched: Narnia
+#>   ebrd                        coo_group eu_ebrd                  coo_group_alt
+#> 1    1                     Central Asia       0 Former Soviet Union + Mongolia
+#> 2    1 Central Europe and Baltic States       1                        EU-EBRD
+#> 3   NA                             <NA>      NA                           <NA>
+#> 4    0                             <NA>       0                           <NA>
+#>   ebrd_shareholder
+#> 1                1
+#> 2                1
+#> 3               NA
+#> 4                1
 ```

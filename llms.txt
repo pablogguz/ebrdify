@@ -4,8 +4,36 @@ A handy function to classify EBRD countries of operation
 
 # R
 
-    # install.packages("pak")
-    pak::pak("pablogguz/ebrdify")
+``` r
+
+# install.packages("pak")
+pak::pak("pablogguz/ebrdify")
+```
+
+## Usage
+
+``` r
+
+library(ebrdify)
+
+# Classify the countries in your data into EBRD groupings.
+# Accepts ISO3, ISO2 or country names (format auto-detected if not given).
+df <- data.frame(country = c("Kazakhstan", "Poland", "Germany", "Nigeria"))
+ebrdify(df, "country")
+#>      country ebrd                        coo_group eu_ebrd ...
+
+# Get the full list of EBRD economies (ISO3 codes, official names, or both).
+list_ebrd()                            # data frame of all 41 economies
+list_ebrd("iso3c")                     # just the ISO3 codes
+list_ebrd("name", group = "Central Asia")
+
+# Rewrite country names to official EBRD / Transition Report terminology.
+canonise(c("Czech Republic", "Palestine", "Kyrgyzstan", "Taiwan"))
+#> "Czechia" "West Bank and Gaza" "Kyrgyz Republic" "Taipei China"
+```
+
+Country names and groupings follow Annex I of the EBRD OCE Transition
+Report style guide.
 
 # Stata
 
@@ -19,6 +47,12 @@ A handy function to classify EBRD countries of operation
 
 ## All functions
 
+- [`canonise()`](https://pablogguz.github.io/ebrdify/reference/canonise.md)
+  : Canonise country names to official EBRD terminology
 - [`ebrdify()`](https://pablogguz.github.io/ebrdify/reference/ebrdify.md)
-  : EBRD Country Classification
+  : Classify countries into EBRD groupings
+- [`list_ebrd()`](https://pablogguz.github.io/ebrdify/reference/list_ebrd.md)
+  : List EBRD economies
+- [`list_ebrd_groups()`](https://pablogguz.github.io/ebrdify/reference/list_ebrd_groups.md)
+  : EBRD regional groupings
 
