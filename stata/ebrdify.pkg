@@ -1,8 +1,12 @@
-v 0.3.0
-d 'EBRDIFY': Classify countries into EBRD groupings
+v 0.4.0
+d 'EBRDIFY': Classify countries into EBRD groupings, list economies, and standardise names
 d
 d Distribution-Date:   20260629
 d License: MIT
-d 
+d
 F ebrdify.ado
 F ebrdify.sthlp
+F canonise.ado
+F canonise.sthlp
+F list_ebrd.ado
+F list_ebrd.sthlp

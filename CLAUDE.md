@@ -32,7 +32,13 @@ All classification and naming data come from **Annex I of the OCE TR style guide
 `oce_style_guide_v1.qmd`, plus `groupings/comparators.md`). When that guide
 changes, update [R/lookups.R](R/lookups.R) — it is the single in-package source
 of truth from which every lookup table is derived. Keep the Stata
-implementation ([stata/ebrdify.ado](stata/ebrdify.ado)) in sync manually.
+implementation in sync manually: [stata/ebrdify.ado](stata/ebrdify.ado),
+[stata/canonise.ado](stata/canonise.ado) (mirrors `canonise()`), and
+[stata/list_ebrd.ado](stata/list_ebrd.ado) (mirrors `list_ebrd()`). The Stata
+ports use the `isocodes` package for identifier→ISO3 conversion and inline
+`replace` lookups (no bundled `.dta`); a cross-port parity check (R vs Stata,
+value-for-value) confirms `ebrdify`/`canonise` agree on matched economies. Stata
+is versioned separately (`stata/ebrdify.pkg`), not in `NEWS.md`.
 
 ### Naming rules (TR house style)
 
