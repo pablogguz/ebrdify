@@ -1,6 +1,6 @@
 # Changelog
 
-## ebrdify 0.6.0
+## ebrdify 0.5.1
 
 - [`ebrdify()`](https://pablogguz.github.io/ebrdify/reference/ebrdify.md)
   now adds a `comparator_imf` column classifying every economy into one
