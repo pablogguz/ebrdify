@@ -1,5 +1,15 @@
 # Changelog
 
+## ebrdify 0.6.0
+
+- [`ebrdify()`](https://pablogguz.github.io/ebrdify/reference/ebrdify.md)
+  now adds a `comparator_imf` column classifying every economy into one
+  of three mutually exclusive IMF/WEO comparator buckets:
+  `"EBRD regions"` (any EBRD economy), `"Advanced Economies"` (non-EBRD
+  advanced economies, e.g. Germany, Czechia, Greece), or `"Other EMDEs"`
+  (every other resolved economy). Based on the IMF WEO Advanced
+  Economies list in the TR style guide (`groupings/comparators.md`).
+
 ## ebrdify 0.5.0
 
 - New

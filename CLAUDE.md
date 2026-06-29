@@ -16,7 +16,11 @@ Public API:
 - `ebrdify(data, var, var_format)` — appends classification columns:
   `ebrd` (is an EBRD country of operation), `coo_group` (traditional
   regional grouping), `eu_ebrd` (EBRD economy that is also an EU
-  member), `coo_group_alt` (alternative grouping), `ebrd_shareholder`.
+  member), `coo_group_alt` (alternative grouping), `ebrd_shareholder`,
+  and `comparator_imf` (a 3-way IMF/WEO bucket: `"EBRD regions"` /
+  `"Advanced Economies"` / `"Other EMDEs"`, mutually exclusive over
+  every resolved economy; built from the IMF WEO Advanced Economies list
+  in `comparators.md`, `.advanced_economies_iso3`).
 - `list_ebrd(what, group)` — returns the full list of EBRD economies as
   ISO3 codes, official names, or both; optionally filtered to one
   `coo_group`.

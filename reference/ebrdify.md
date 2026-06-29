@@ -58,6 +58,13 @@ with just these columns (one row per input element) is returned.
 
   `1` if an EBRD shareholder, else `0` (`NA` if unmatched).
 
+- `comparator_imf`:
+
+  IMF/WEO comparator bucket, one of `"EBRD regions"` (any EBRD economy),
+  `"Advanced Economies"` (non-EBRD advanced economy, e.g. Germany,
+  Czechia, Greece), or `"Other EMDEs"` (every other resolved economy);
+  `NA` if unmatched.
+
 Unmatched identifiers are reported once via
 [`message()`](https://rdrr.io/r/base/message.html).
 
@@ -80,12 +87,12 @@ ebrdify(df, "country_code", var_format = "iso3c")
 #> 3          NGA    1               Sub-Saharan Africa       0
 #> 4          ARM    1  Eastern Europe and the Caucasus       0
 #> 5          USA    0                             <NA>       0
-#>                    coo_group_alt ebrd_shareholder
-#> 1 Former Soviet Union + Mongolia                1
-#> 2                        EU-EBRD                1
-#> 3             Sub-Saharan Africa                1
-#> 4 Former Soviet Union + Mongolia                1
-#> 5                           <NA>                1
+#>                    coo_group_alt ebrd_shareholder     comparator_imf
+#> 1 Former Soviet Union + Mongolia                1       EBRD regions
+#> 2                        EU-EBRD                1       EBRD regions
+#> 3             Sub-Saharan Africa                1       EBRD regions
+#> 4 Former Soviet Union + Mongolia                1       EBRD regions
+#> 5                           <NA>                1 Advanced Economies
 
 # Using a vector, with auto-detected format
 ebrdify(var = c("Kazakhstan", "Croatia", "Narnia", "United States"))
@@ -95,9 +102,9 @@ ebrdify(var = c("Kazakhstan", "Croatia", "Narnia", "United States"))
 #> 2    1 Central Europe and Baltic States       1                        EU-EBRD
 #> 3   NA                             <NA>      NA                           <NA>
 #> 4    0                             <NA>       0                           <NA>
-#>   ebrd_shareholder
-#> 1                1
-#> 2                1
-#> 3               NA
-#> 4                1
+#>   ebrd_shareholder     comparator_imf
+#> 1                1       EBRD regions
+#> 2                1       EBRD regions
+#> 3               NA               <NA>
+#> 4                1 Advanced Economies
 ```
