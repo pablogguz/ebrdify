@@ -2,7 +2,7 @@
 
 library(testthat)
 
-test_that("canonise() applies the headline forbidden-name fixes", {
+test_that("canonise() applies the headline name fixes", {
   expect_equal(canonise("Czech Republic"), "Czechia")
   expect_equal(canonise("Palestine"), "West Bank and Gaza")
   expect_equal(canonise("Kyrgyzstan"), "Kyrgyz Republic")

@@ -14,9 +14,8 @@ Syntax
 Description
 ------------
     `canonise' takes a string variable of country identifiers (ISO3C, ISO2C, or
-    country name) and creates a new variable holding the official country name
-    used in the EBRD Transition Report. It enforces the TR "forbidden names"
-    rules from Annex I of the style guide, for example:
+    country name) and creates a new variable holding the official EBRD country
+    name, for example:
 
         Czech Republic  -> Czechia
         Palestine       -> West Bank and Gaza

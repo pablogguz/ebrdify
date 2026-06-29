@@ -1,37 +1,24 @@
 # ebrdify 0.5.2
 
-* Removed the `ebrd_shareholder` column from `ebrdify()`. The shareholder
-  classification added little value, so `ebrdify()` now returns five
-  classification columns: `ebrd`, `coo_group`, `eu_ebrd`, `coo_group_alt`, and
-  `comparator_imf`.
+* Dropped the `ebrd_shareholder` column. `ebrdify()` now returns `ebrd`,
+  `coo_group`, `eu_ebrd`, `coo_group_alt` and `comparator_imf`.
 
 # ebrdify 0.5.1
 
-* `ebrdify()` now adds a `comparator_imf` column classifying every economy into
-  one of three mutually exclusive IMF/WEO comparator buckets: `"EBRD regions"`
-  (any EBRD economy), `"Advanced Economies"` (non-EBRD advanced economies, e.g.
-  Germany, Czechia, Greece), or `"Other EMDEs"` (every other resolved economy).
-  Based on the IMF WEO Advanced Economies list in the TR style guide
-  (`groupings/comparators.md`).
+* `ebrdify()` gained a `comparator_imf` column. It tags each economy as an
+  `"EBRD regions"`, an `"Advanced Economies"`, or an `"Other EMDEs"`, using the
+  IMF World Economic Outlook split between advanced and emerging economies.
 
 # ebrdify 0.5.0
 
-* New `list_ebrd()` returns the full list of EBRD economies as ISO3 codes,
-  official names, or both, optionally filtered to one regional grouping;
-  `list_ebrd_groups()` lists the available groupings.
-* New `canonise()` rewrites country identifiers to official EBRD / Transition
-  Report names (e.g. Czech Republic → Czechia, Palestine → West Bank and Gaza,
-  Kyrgyzstan → Kyrgyz Republic, Taiwan → Taipei China).
-* Fixed a crash in `ebrdify()` ("row names contain missing values") that
-  occurred for common inputs mixing EBRD and non-EBRD countries (e.g. a vector
-  like `c("KAZ", "USA")`).
-* `ebrdify()` now correctly classifies Kosovo whether passed as `XKX` or `KOS`.
-* Performance: classification lookup tables are now built once when the package
-  loads instead of on every call, and the hot path avoids redundant work.
-* Dropped the `dplyr` and `tidyr` dependencies (unused), for a lighter, faster
-  install and load.
-* Added a real test suite (`tests/testthat.R` was previously empty, so
-  `R CMD check` ran no tests).
+* New `list_ebrd()` returns the full list of EBRD economies — ISO3 codes,
+  official names, or both — and can be filtered to one regional grouping.
+* New `canonise()` rewrites country names to their official EBRD spelling
+  (Czech Republic → Czechia, Palestine → West Bank and Gaza, Kyrgyzstan →
+  Kyrgyz Republic, Taiwan → Taipei China).
+* Fixed a crash when classifying a mix of EBRD and non-EBRD countries.
+* Kosovo is now recognised whether passed as `XKX` or `KOS`.
+* Faster, with `dplyr` and `tidyr` no longer required.
 
 # ebrdify 0.4.4
 

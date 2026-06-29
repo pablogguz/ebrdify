@@ -146,8 +146,7 @@ program define ebrdify
     * Create the comparator_imf variable: a mutually exclusive IMF/WEO bucket over
     * every resolved economy. EBRD economies -> "EBRD regions"; non-EBRD advanced
     * economies -> "Advanced Economies"; all other resolved economies -> "Other
-    * EMDEs". The advanced list is the IMF WEO Advanced Economies group (TR style
-    * guide, groupings/comparators.md).
+    * EMDEs". The advanced list is the IMF WEO Advanced Economies group.
     generate comparator_imf = . `if'
 
     local advanced "AND AUS AUT BEL CAN CYP CZE DNK FIN FRA DEU GRC HKG ISL IRL ISR ITA JPN KOR LUX MAC MLT NLD NZL NOR PRT PRI SMR SGP ESP SWE CHE TWN GBR USA"

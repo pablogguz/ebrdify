@@ -24,7 +24,7 @@ test_that("list_ebrd() uses official EBRD names", {
   # official forms must be present...
   expect_true(all(c("Kyrgyz Republic", "Slovak Republic", "Türkiye",
                      "West Bank and Gaza", "Côte d'Ivoire", "Kosovo") %in% names))
-  # ...and forbidden / non-EBRD forms absent
+  # ...and non-standard / non-EBRD forms absent
   expect_false(any(c("Kyrgyzstan", "Slovakia", "Turkey", "Palestine",
                      "Czechia", "Greece") %in% names))
 })

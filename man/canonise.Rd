@@ -16,15 +16,13 @@ canonise(x, from = NULL, warn = TRUE)
 via \code{\link[=message]{message()}}.}
 }
 \value{
-A character vector the same length as \code{x} of official EBRD/TR names,
+A character vector the same length as \code{x} of official EBRD names,
 with \code{NA} for identifiers that could not be matched. Designed to drop into
 \code{dplyr::mutate()}, e.g. \code{mutate(country = canonise(country))}.
 }
 \description{
-Rewrites country identifiers (names, ISO3 or ISO2 codes) to the official
-country names used in the EBRD Transition Report. This enforces the TR house
-style and the "forbidden names" rules from Annex I of the style guide — for
-example:
+Rewrites country identifiers (names, ISO3 or ISO2 codes) to their official
+EBRD country names — for example:
 }
 \details{
 \itemize{
@@ -37,10 +35,10 @@ example:
 \item Taiwan \eqn{\rightarrow} Taipei China
 }
 
-EBRD economies are named from the official Annex I list; other economies fall
-back to \code{countrycode}'s English short name, with TR-specific overrides applied
+EBRD economies use their official EBRD names; other economies fall
+back to \code{countrycode}'s English short name, with EBRD-specific overrides applied
 on top (Taipei China, Hong Kong SAR, Macao SAR, Czechia) because \code{countrycode}
-returns a non-TR form for those.
+returns a different form for those.
 }
 \examples{
 canonise(c("Czech Republic", "Palestine", "Kyrgyzstan", "Taiwan"))

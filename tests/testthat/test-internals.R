@@ -34,5 +34,5 @@ test_that("internal lookups are mutually consistent", {
   expect_false(any(duplicated(tbl$iso3c)))
   expect_false(any(duplicated(tbl$name)))
   # name override covers every economy
-  expect_true(all(tbl$iso3c %in% names(ebrdify:::.tr_name_override)))
+  expect_true(all(tbl$iso3c %in% names(ebrdify:::.ebrd_name_override)))
 })

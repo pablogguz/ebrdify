@@ -21,7 +21,7 @@ alphabetically by official name (or by code for \code{what = "iso3c"}).
 }
 \description{
 Returns the full list of the 41 EBRD economies — their ISO3 codes, their
-official EBRD/Transition Report names, or both — optionally restricted to a
+official EBRD names, or both — optionally restricted to a
 single traditional regional grouping.
 }
 \examples{

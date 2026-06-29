@@ -15,7 +15,7 @@ Description
 ------------
     `list_ebrd' replaces the data in memory with the 41 EBRD economies, creating
     three string variables: iso3c (ISO3 code, Kosovo = XKX), name (official EBRD
-    / Transition Report name), and coo_group (traditional regional grouping).
+    name), and coo_group (traditional regional grouping).
 
     Because it replaces the data in memory, the clear option is required when a
     dataset is already loaded.

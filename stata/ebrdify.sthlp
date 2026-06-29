@@ -15,7 +15,7 @@ Description
 ------------
     `ebrdify' takes a string variable of country identifiers (ISO3C, ISO2C, or
     country name) and adds five classification variables, following the official
-    EBRD / Transition Report classification:
+    EBRD classification:
 
         ebrd              1 if an EBRD country of operation, 0 otherwise
         coo_group         traditional EBRD regional grouping
@@ -26,9 +26,9 @@ Description
                           economy), or "Other EMDEs" (every other resolved
                           economy)
 
-    Naming and groupings follow Annex I of the EBRD OCE Transition Report style
-    guide. As of 2026, Czechia and Greece are no longer EBRD economies; in
-    comparator_imf they fall under "Advanced Economies".
+    Naming and groupings follow the official EBRD classification. As of 2026,
+    Czechia and Greece are no longer EBRD economies; in comparator_imf they fall
+    under "Advanced Economies".
 
 Options
 -------

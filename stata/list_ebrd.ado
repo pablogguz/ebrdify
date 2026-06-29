@@ -23,7 +23,7 @@ program define list_ebrd, rclass
         local ++i
     }
 
-    * Official EBRD / Transition Report names.
+    * Official EBRD names.
     gen str30 name = ""
     quietly replace name = "Albania"                if iso3c == "ALB"
     quietly replace name = "Armenia"                if iso3c == "ARM"

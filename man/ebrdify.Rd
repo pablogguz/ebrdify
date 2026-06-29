@@ -36,8 +36,7 @@ Unmatched identifiers are reported once via \code{\link[=message]{message()}}.
 }
 \description{
 Tags each country in a dataset with its EBRD status and regional groupings,
-following the official EBRD / Transition Report classification (Annex I of the
-OCE TR style guide). Country identifiers may be ISO3 codes, ISO2 codes, or
+following the official EBRD classification. Country identifiers may be ISO3 codes, ISO2 codes, or
 country names, and the format is auto-detected when not supplied.
 }
 \examples{

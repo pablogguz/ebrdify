@@ -48,8 +48,8 @@ program define canonise
     * Kosovo has no ISO3 in isocodes; map its common aliases to canonical XKX.
     quietly replace iso3c = "XKX" if inlist(`src', "Kosovo", "KOS", "XKX", "XK", "Republic of Kosovo")
 
-    * Base name = isocodes standard name, then overlay the official EBRD / TR
-    * spellings (the only cases where isocodes differs from house style).
+    * Base name = isocodes standard name, then overlay the official EBRD
+    * spellings (the only cases where isocodes differs).
     quietly gen `generate' = cntryname
     quietly replace `generate' = "Czechia"            if iso3c == "CZE"
     quietly replace `generate' = "Hong Kong SAR"      if iso3c == "HKG"

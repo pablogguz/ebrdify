@@ -1,8 +1,7 @@
 # lookups.R
 #
 # Internal data: the single in-package source of truth for EBRD classification
-# and naming. Everything here is derived from Annex I of the OCE TR style guide
-# (oce_style_guide_v1.qmd, #sec-annex-i) and groupings/comparators.md.
+# and naming. Everything here encodes the official EBRD classification.
 #
 # These objects are created ONCE when the package namespace is loaded, not on
 # every ebrdify()/canonise() call. That is the main performance lever: the hot
@@ -11,13 +10,13 @@
 # Non-ASCII names use \u escapes so the package stays portable and R CMD
 # check-clean (T\u00FCrkiye -> "T\u00FCrkiye", C\u00F4te d'Ivoire -> "C\u00F4te d'Ivoire").
 
-# Master table of the 41 EBRD economies (Annex I, tbl-ebrd-coo). Kosovo uses the
+# Master table of the 41 EBRD economies. Kosovo uses the
 # ISO 3166-1 alpha-3 code XKX (EBRD's "KOS" is normalised to XKX in .to_iso3c()).
 # Columns:
 #   iso3c          ISO3 code (canonical key for every lookup)
-#   name           official EBRD/TR country name
-#   coo_group      traditional EBRD regional grouping (tbl-ebrd-regions)
-#   coo_group_alt  alternative grouping (tbl-ebrd-unofficial)
+#   name           official EBRD country name
+#   coo_group      traditional EBRD regional grouping
+#   coo_group_alt  alternative grouping
 #   eu_ebrd        TRUE if also an EU member state
 .ebrd_economies <- data.frame(
   iso3c = c(
@@ -93,7 +92,7 @@
   .ebrd_economies$iso3c[.ebrd_economies$eu_ebrd]
 )
 
-# IMF WEO "Advanced Economies" (groupings/comparators.md, April 2025), used to
+# IMF WEO "Advanced Economies" (April 2025), used to
 # build the `comparator_imf` column. This is the comparator list, which already
 # excludes EBRD economies (Croatia, Estonia, Latvia, Lithuania, Slovak Republic,
 # Slovenia are advanced but omitted as comparators). In `comparator_imf` the EBRD
@@ -109,10 +108,10 @@
 )
 
 # Name overrides for canonise(): the 41 EBRD official names, plus non-EBRD
-# comparators whose TR-required name differs from countrycode's English short
+# comparators whose required EBRD name differs from countrycode's English short
 # name (countrycode gives "Taiwan", "Hong Kong SAR China", "Macao SAR China").
 # CZE is listed explicitly even though countrycode already returns "Czechia".
-.tr_name_override <- c(
+.ebrd_name_override <- c(
   .name_lookup,
   TWN = "Taipei China",
   HKG = "Hong Kong SAR",

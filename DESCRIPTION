@@ -5,7 +5,7 @@ Authors@R:
     person("Pablo", "Garcia-Guzman", email = "garciagp@ebrd.com", role = c("aut", "cre"))
 Description: This package provides simple helpers to classify countries in your
     data according to the EBRD groupings, list the EBRD economies, and
-    standardise country names to official EBRD / Transition Report terminology.
+    standardise country names to their official EBRD spelling.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

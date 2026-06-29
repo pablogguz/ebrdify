@@ -2,10 +2,8 @@
 
 #' Canonise country names to official EBRD terminology
 #'
-#' Rewrites country identifiers (names, ISO3 or ISO2 codes) to the official
-#' country names used in the EBRD Transition Report. This enforces the TR house
-#' style and the "forbidden names" rules from Annex I of the style guide — for
-#' example:
+#' Rewrites country identifiers (names, ISO3 or ISO2 codes) to their official
+#' EBRD country names — for example:
 #'
 #' \itemize{
 #'   \item Czech Republic \eqn{\rightarrow} Czechia
@@ -17,17 +15,17 @@
 #'   \item Taiwan \eqn{\rightarrow} Taipei China
 #' }
 #'
-#' EBRD economies are named from the official Annex I list; other economies fall
-#' back to `countrycode`'s English short name, with TR-specific overrides applied
+#' EBRD economies use their official EBRD names; other economies fall
+#' back to `countrycode`'s English short name, with EBRD-specific overrides applied
 #' on top (Taipei China, Hong Kong SAR, Macao SAR, Czechia) because `countrycode`
-#' returns a non-TR form for those.
+#' returns a different form for those.
 #'
 #' @param x A vector of country identifiers (names, ISO3, or ISO2 codes).
 #' @param from Format of `x`: `"country.name"`, `"iso3c"`, or `"iso2c"`. If
 #'   `NULL` (default) the format is auto-detected.
 #' @param warn If `TRUE` (default), report identifiers that could not be matched
 #'   via [message()].
-#' @return A character vector the same length as `x` of official EBRD/TR names,
+#' @return A character vector the same length as `x` of official EBRD names,
 #'   with `NA` for identifiers that could not be matched. Designed to drop into
 #'   `dplyr::mutate()`, e.g. `mutate(country = canonise(country))`.
 #' @seealso [ebrdify()] to classify economies and [list_ebrd()] for the full
@@ -50,9 +48,9 @@ canonise <- function(x, from = NULL, warn = TRUE) {
   }
 
   iso <- .to_iso3c(x, from)
-  out <- unname(.tr_name_override[iso])
+  out <- unname(.ebrd_name_override[iso])
 
-  # Anything resolved to an ISO3 code but not covered by the TR overrides gets
+  # Anything resolved to an ISO3 code but not covered by the EBRD overrides gets
   # countrycode's English short name (computed once per unique code).
   needs_fallback <- !is.na(iso) & is.na(out)
   if (any(needs_fallback)) {
