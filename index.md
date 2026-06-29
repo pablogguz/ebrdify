@@ -29,13 +29,12 @@ list_ebrd()                            # data frame of all 41 economies
 list_ebrd("iso3c")                     # just the ISO3 codes
 list_ebrd("name", group = "Central Asia")
 
-# Rewrite country names to official EBRD / Transition Report terminology.
+# Rewrite country names to their official EBRD spelling.
 canonise(c("Czech Republic", "Palestine", "Kyrgyzstan", "Taiwan"))
 #> "Czechia" "West Bank and Gaza" "Kyrgyz Republic" "Taipei China"
 ```
 
-Country names and groupings follow Annex I of the EBRD OCE Transition
-Report style guide.
+Country names and groupings follow the official EBRD classification.
 
 # Stata
 

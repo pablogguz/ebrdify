@@ -32,25 +32,25 @@
 
 <div id="claudemd" class="section level1">
 
-<p><code>ebrdify</code> — an R (and Stata) package that classifies countries in a dataset into <strong>EBRD groupings</strong> and standardises country names to <strong>official EBRD / Transition Report (TR) terminology</strong>.</p>
+<p><code>ebrdify</code> — an R (and Stata) package that classifies countries in a dataset into <strong>EBRD groupings</strong> and standardises country names to their <strong>official EBRD spelling</strong>.</p>
 <div class="section level2">
 <h2 id="what-the-package-does">What the package does<a class="anchor" aria-label="anchor" href="#what-the-package-does"></a></h2>
-<p>Given a column or vector of country identifiers (ISO3, ISO2, or country names), the package tags each economy with its EBRD classification and can rewrite its name to the official form used in the EBRD Transition Report.</p>
+<p>Given a column or vector of country identifiers (ISO3, ISO2, or country names), the package tags each economy with its EBRD classification and can rewrite its name to its official EBRD form.</p>
 <p>Public API:</p>
 <ul><li>
-<code>ebrdify(data, var, var_format)</code> — appends classification columns: <code>ebrd</code> (is an EBRD country of operation), <code>coo_group</code> (traditional regional grouping), <code>eu_ebrd</code> (EBRD economy that is also an EU member), <code>coo_group_alt</code> (alternative grouping), and <code>comparator_imf</code> (a 3-way IMF/WEO bucket: <code>"EBRD regions"</code> / <code>"Advanced Economies"</code> / <code>"Other EMDEs"</code>, mutually exclusive over every resolved economy; built from the IMF WEO Advanced Economies list in <code>comparators.md</code>, <code>.advanced_economies_iso3</code>).</li>
+<code>ebrdify(data, var, var_format)</code> — appends classification columns: <code>ebrd</code> (is an EBRD country of operation), <code>coo_group</code> (traditional regional grouping), <code>eu_ebrd</code> (EBRD economy that is also an EU member), <code>coo_group_alt</code> (alternative grouping), and <code>comparator_imf</code> (a 3-way IMF/WEO bucket: <code>"EBRD regions"</code> / <code>"Advanced Economies"</code> / <code>"Other EMDEs"</code>, mutually exclusive over every resolved economy; built from the IMF WEO Advanced Economies list, <code>.advanced_economies_iso3</code>).</li>
 <li>
 <code>list_ebrd(what, group)</code> — returns the full list of EBRD economies as ISO3 codes, official names, or both; optionally filtered to one <code>coo_group</code>.</li>
 <li>
-<code>canonise(x, from)</code> — rewrites country identifiers to their official EBRD/TR names (e.g. Czech Republic → Czechia, Palestine → West Bank and Gaza, Kyrgyzstan → Kyrgyz Republic, Taiwan → Taipei China).</li>
+<code>canonise(x, from)</code> — rewrites country identifiers to their official EBRD names (e.g. Czech Republic → Czechia, Palestine → West Bank and Gaza, Kyrgyzstan → Kyrgyz Republic, Taiwan → Taipei China).</li>
 </ul></div>
 <div class="section level2">
 <h2 id="source-of-truth">Source of truth<a class="anchor" aria-label="anchor" href="#source-of-truth"></a></h2>
-<p>All classification and naming data come from <strong>Annex I of the OCE TR style guide</strong> (<code>~/Documents/GitHub/tr-style-guide</code>, section <code>#sec-annex-i</code> of <code>oce_style_guide_v1.qmd</code>, plus <code>groupings/comparators.md</code>). When that guide changes, update <a href="R/lookups.R">R/lookups.R</a> — it is the single in-package source of truth from which every lookup table is derived. Keep the Stata implementation in sync manually: <a href="stata/ebrdify.ado">stata/ebrdify.ado</a>, <a href="stata/canonise.ado">stata/canonise.ado</a> (mirrors <code><a href="reference/canonise.html">canonise()</a></code>), and <a href="stata/list_ebrd.ado">stata/list_ebrd.ado</a> (mirrors <code><a href="reference/list_ebrd.html">list_ebrd()</a></code>). The Stata ports use the <code>isocodes</code> package for identifier→ISO3 conversion and inline <code>replace</code> lookups (no bundled <code>.dta</code>); a cross-port parity check (R vs Stata, value-for-value) confirms <code>ebrdify</code>/<code>canonise</code> agree on matched economies. Stata is versioned separately (<code>stata/ebrdify.pkg</code>), not in <code>NEWS.md</code>.</p>
+<p><a href="R/lookups.R">R/lookups.R</a> is the single in-package source of truth: it encodes the official EBRD classification and the names from which every lookup table is derived. Update it whenever the official EBRD classification changes. Keep the Stata implementation in sync manually: <a href="stata/ebrdify.ado">stata/ebrdify.ado</a>, <a href="stata/canonise.ado">stata/canonise.ado</a> (mirrors <code><a href="reference/canonise.html">canonise()</a></code>), and <a href="stata/list_ebrd.ado">stata/list_ebrd.ado</a> (mirrors <code><a href="reference/list_ebrd.html">list_ebrd()</a></code>). The Stata ports use the <code>isocodes</code> package for identifier→ISO3 conversion and inline <code>replace</code> lookups (no bundled <code>.dta</code>); a cross-port parity check (R vs Stata, value-for-value) confirms <code>ebrdify</code>/<code>canonise</code> agree on matched economies. Stata is versioned separately (<code>stata/ebrdify.pkg</code>), not in <code>NEWS.md</code>.</p>
 <div class="section level3">
-<h3 id="naming-rules-tr-house-style">Naming rules (TR house style)<a class="anchor" aria-label="anchor" href="#naming-rules-tr-house-style"></a></h3>
-<ul><li>EBRD economies use the official names in <code>.ebrd_economies</code> (Annex I, <code>tbl-ebrd-coo</code>). “Forbidden names” are never used: Türkiye (not Turkey), Kyrgyz Republic (not Kyrgyzstan), Slovak Republic (not Slovakia), Côte d’Ivoire (not Ivory Coast), West Bank and Gaza (not Palestine), Czechia (not Czech Republic).</li>
-<li>Some non-EBRD comparators also have required names: Taipei China (not Taiwan), Hong Kong SAR, Macao SAR. These live in <code>.tr_name_override</code>.</li>
+<h3 id="naming-rules">Naming rules<a class="anchor" aria-label="anchor" href="#naming-rules"></a></h3>
+<ul><li>EBRD economies use the official names in <code>.ebrd_economies</code>. The following forms are never used: Türkiye (not Turkey), Kyrgyz Republic (not Kyrgyzstan), Slovak Republic (not Slovakia), Côte d’Ivoire (not Ivory Coast), West Bank and Gaza (not Palestine), Czechia (not Czech Republic).</li>
+<li>Some non-EBRD comparators also have required names: Taipei China (not Taiwan), Hong Kong SAR, Macao SAR. These live in <code>.ebrd_name_override</code>.</li>
 <li>
 <code><a href="reference/canonise.html">canonise()</a></code> applies these overrides on top of <code>countrycode</code>’s English short names, because <code>countrycode</code> returns the <em>wrong</em> form for several of them (e.g. it gives “Turkey”, “Kyrgyzstan”, “Slovakia”, “Palestinian Territories”, “Taiwan”).</li>
 </ul></div>
@@ -90,7 +90,7 @@
 <li>Bump <code>Version</code> in <code>DESCRIPTION</code> and add a <code>NEWS.md</code> entry for any classification/naming change. NEWS tracks the <strong>R</strong> implementation only.</li>
 <li>Non-ASCII names are written with <code>\u</code> escapes (e.g. <code>"Türkiye"</code>, <code>"Côte d'Ivoire"</code>) so the package stays portable and <code>R CMD check</code>-clean.</li>
 <li>
-<code>dev/</code>, <code>stata/</code>, <code>data-raw/</code>, <code>pkgdown/</code> are build-ignored (<code>.Rbuildignore</code>).  </li>
+<code>dev/</code>, <code>stata/</code>, <code>data-raw/</code>, <code>pkgdown/</code> are build-ignored (<code>.Rbuildignore</code>).</li>
 </ul></div>
 </div>
 

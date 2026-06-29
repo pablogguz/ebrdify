@@ -32,23 +32,20 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.2" id="ebrdify-052">ebrdify 0.5.2<a class="anchor" aria-label="anchor" href="#ebrdify-052"></a></h2>
-<ul><li>Removed the <code>ebrd_shareholder</code> column from <code><a href="../reference/ebrdify.html">ebrdify()</a></code>. The shareholder classification added little value, so <code><a href="../reference/ebrdify.html">ebrdify()</a></code> now returns five classification columns: <code>ebrd</code>, <code>coo_group</code>, <code>eu_ebrd</code>, <code>coo_group_alt</code>, and <code>comparator_imf</code>.</li>
+<ul><li>Dropped the <code>ebrd_shareholder</code> column. <code><a href="../reference/ebrdify.html">ebrdify()</a></code> now returns <code>ebrd</code>, <code>coo_group</code>, <code>eu_ebrd</code>, <code>coo_group_alt</code> and <code>comparator_imf</code>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.1" id="ebrdify-051">ebrdify 0.5.1<a class="anchor" aria-label="anchor" href="#ebrdify-051"></a></h2>
 <ul><li>
-<code><a href="../reference/ebrdify.html">ebrdify()</a></code> now adds a <code>comparator_imf</code> column classifying every economy into one of three mutually exclusive IMF/WEO comparator buckets: <code>"EBRD regions"</code> (any EBRD economy), <code>"Advanced Economies"</code> (non-EBRD advanced economies, e.g. Germany, Czechia, Greece), or <code>"Other EMDEs"</code> (every other resolved economy). Based on the IMF WEO Advanced Economies list in the TR style guide (<code>groupings/comparators.md</code>).</li>
+<code><a href="../reference/ebrdify.html">ebrdify()</a></code> gained a <code>comparator_imf</code> column. It tags each economy as an <code>"EBRD regions"</code>, an <code>"Advanced Economies"</code>, or an <code>"Other EMDEs"</code>, using the IMF World Economic Outlook split between advanced and emerging economies.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.0" id="ebrdify-050">ebrdify 0.5.0<a class="anchor" aria-label="anchor" href="#ebrdify-050"></a></h2>
-<ul><li>New <code><a href="../reference/list_ebrd.html">list_ebrd()</a></code> returns the full list of EBRD economies as ISO3 codes, official names, or both, optionally filtered to one regional grouping; <code><a href="../reference/list_ebrd_groups.html">list_ebrd_groups()</a></code> lists the available groupings.</li>
-<li>New <code><a href="../reference/canonise.html">canonise()</a></code> rewrites country identifiers to official EBRD / Transition Report names (e.g. Czech Republic → Czechia, Palestine → West Bank and Gaza, Kyrgyzstan → Kyrgyz Republic, Taiwan → Taipei China).</li>
-<li>Fixed a crash in <code><a href="../reference/ebrdify.html">ebrdify()</a></code> (“row names contain missing values”) that occurred for common inputs mixing EBRD and non-EBRD countries (e.g. a vector like <code>c("KAZ", "USA")</code>).</li>
-<li>
-<code><a href="../reference/ebrdify.html">ebrdify()</a></code> now correctly classifies Kosovo whether passed as <code>XKX</code> or <code>KOS</code>.</li>
-<li>Performance: classification lookup tables are now built once when the package loads instead of on every call, and the hot path avoids redundant work.</li>
-<li>Dropped the <code>dplyr</code> and <code>tidyr</code> dependencies (unused), for a lighter, faster install and load.</li>
-<li>Added a real test suite (<code>tests/testthat.R</code> was previously empty, so <code>R CMD check</code> ran no tests).</li>
+<ul><li>New <code><a href="../reference/list_ebrd.html">list_ebrd()</a></code> returns the full list of EBRD economies — ISO3 codes, official names, or both — and can be filtered to one regional grouping.</li>
+<li>New <code><a href="../reference/canonise.html">canonise()</a></code> rewrites country names to their official EBRD spelling (Czech Republic → Czechia, Palestine → West Bank and Gaza, Kyrgyzstan → Kyrgyz Republic, Taiwan → Taipei China).</li>
+<li>Fixed a crash when classifying a mix of EBRD and non-EBRD countries.</li>
+<li>Kosovo is now recognised whether passed as <code>XKX</code> or <code>KOS</code>.</li>
+<li>Faster, with <code>dplyr</code> and <code>tidyr</code> no longer required.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.4" id="ebrdify-044">ebrdify 0.4.4<a class="anchor" aria-label="anchor" href="#ebrdify-044"></a></h2>

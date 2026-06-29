@@ -1,9 +1,7 @@
 # Canonise country names to official EBRD terminology
 
-Rewrites country identifiers (names, ISO3 or ISO2 codes) to the official
-country names used in the EBRD Transition Report. This enforces the TR
-house style and the "forbidden names" rules from Annex I of the style
-guide — for example:
+Rewrites country identifiers (names, ISO3 or ISO2 codes) to their
+official EBRD country names — for example:
 
 ## Usage
 
@@ -29,9 +27,9 @@ canonise(x, from = NULL, warn = TRUE)
 
 ## Value
 
-A character vector the same length as `x` of official EBRD/TR names,
-with `NA` for identifiers that could not be matched. Designed to drop
-into `dplyr::mutate()`, e.g. `mutate(country = canonise(country))`.
+A character vector the same length as `x` of official EBRD names, with
+`NA` for identifiers that could not be matched. Designed to drop into
+`dplyr::mutate()`, e.g. `mutate(country = canonise(country))`.
 
 ## Details
 
@@ -49,10 +47,10 @@ into `dplyr::mutate()`, e.g. `mutate(country = canonise(country))`.
 
 - Taiwan \\\rightarrow\\ Taipei China
 
-EBRD economies are named from the official Annex I list; other economies
-fall back to `countrycode`'s English short name, with TR-specific
-overrides applied on top (Taipei China, Hong Kong SAR, Macao SAR,
-Czechia) because `countrycode` returns a non-TR form for those.
+EBRD economies use their official EBRD names; other economies fall back
+to `countrycode`'s English short name, with EBRD-specific overrides
+applied on top (Taipei China, Hong Kong SAR, Macao SAR, Czechia) because
+`countrycode` returns a different form for those.
 
 ## See also
 

@@ -1,8 +1,8 @@
 # List EBRD economies
 
 Returns the full list of the 41 EBRD economies — their ISO3 codes, their
-official EBRD/Transition Report names, or both — optionally restricted
-to a single traditional regional grouping.
+official EBRD names, or both — optionally restricted to a single
+traditional regional grouping.
 
 ## Usage
 
