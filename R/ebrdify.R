@@ -25,6 +25,10 @@
 #'     \item{`coo_group_alt`}{Alternative EBRD grouping, or `NA`.}
 #'     \item{`ebrd_shareholder`}{`1` if an EBRD shareholder, else `0` (`NA` if
 #'       unmatched).}
+#'     \item{`comparator_imf`}{IMF/WEO comparator bucket, one of `"EBRD regions"`
+#'       (any EBRD economy), `"Advanced Economies"` (non-EBRD advanced economy,
+#'       e.g. Germany, Czechia, Greece), or `"Other EMDEs"` (every other resolved
+#'       economy); `NA` if unmatched.}
 #'   }
 #'   Unmatched identifiers are reported once via [message()].
 #' @seealso [list_ebrd()] for the full list of EBRD economies and [canonise()]
@@ -39,7 +43,8 @@
 #' # Using a vector, with auto-detected format
 #' ebrdify(var = c("Kazakhstan", "Croatia", "Narnia", "United States"))
 ebrdify <- function(data = NULL, var, var_format = NULL) {
-  new_cols <- c("ebrd", "coo_group", "eu_ebrd", "coo_group_alt", "ebrd_shareholder")
+  new_cols <- c("ebrd", "coo_group", "eu_ebrd", "coo_group_alt",
+                "ebrd_shareholder", "comparator_imf")
 
   # Resolve the identifier vector and warn about columns/names we will overwrite.
   if (!is.null(data)) {
@@ -75,6 +80,7 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
       eu_ebrd = rep(NA_integer_, n),
       coo_group_alt = rep(NA_character_, n),
       ebrd_shareholder = rep(NA_integer_, n),
+      comparator_imf = rep(NA_character_, n),
       stringsAsFactors = FALSE,
       row.names = NULL
     )
@@ -107,6 +113,15 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
   shareholder <- as.integer(!is.na(.shareholder_lookup[iso]))
   shareholder[!valid] <- NA_integer_
 
+  # IMF/WEO comparator bucket, mutually exclusive over every resolved economy:
+  # EBRD economies -> "EBRD regions"; non-EBRD advanced -> "Advanced Economies";
+  # all other resolved economies -> "Other EMDEs". EBRD is assigned last so it
+  # wins for economies (e.g. Croatia) that are also IMF-advanced.
+  comparator_imf <- rep(NA_character_, n)
+  comparator_imf[valid] <- "Other EMDEs"
+  comparator_imf[valid & !is.na(.advanced_lookup[iso])] <- "Advanced Economies"
+  comparator_imf[valid & !is.na(.ebrd_lookup[iso])] <- "EBRD regions"
+
   # row.names = NULL stops data.frame() from adopting the lookups' (NA-bearing)
   # names as row names, so the character columns can stay named — no unname pass.
   result <- data.frame(
@@ -115,6 +130,7 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
     eu_ebrd = eu,
     coo_group_alt = .alt_lookup[iso],
     ebrd_shareholder = shareholder,
+    comparator_imf = comparator_imf,
     stringsAsFactors = FALSE,
     row.names = NULL
   )

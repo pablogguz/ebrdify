@@ -110,6 +110,21 @@
   rep(TRUE, length(.shareholder_iso3c)), .shareholder_iso3c
 )
 
+# IMF WEO "Advanced Economies" (groupings/comparators.md, April 2025), used to
+# build the `comparator_imf` column. This is the comparator list, which already
+# excludes EBRD economies (Croatia, Estonia, Latvia, Lithuania, Slovak Republic,
+# Slovenia are advanced but omitted as comparators). In `comparator_imf` the EBRD
+# check runs first anyway, so any EBRD economy is labelled "EBRD regions".
+.advanced_economies_iso3 <- c(
+  "AND", "AUS", "AUT", "BEL", "CAN", "CYP", "CZE", "DNK", "FIN", "FRA",
+  "DEU", "GRC", "HKG", "ISL", "IRL", "ISR", "ITA", "JPN", "KOR", "LUX",
+  "MAC", "MLT", "NLD", "NZL", "NOR", "PRT", "PRI", "SMR", "SGP", "ESP",
+  "SWE", "CHE", "TWN", "GBR", "USA"
+)
+.advanced_lookup <- stats::setNames(
+  rep(TRUE, length(.advanced_economies_iso3)), .advanced_economies_iso3
+)
+
 # Name overrides for canonise(): the 41 EBRD official names, plus non-EBRD
 # comparators whose TR-required name differs from countrycode's English short
 # name (countrycode gives "Taiwan", "Hong Kong SAR China", "Macao SAR China").
