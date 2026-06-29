@@ -7,13 +7,13 @@
 ## Citation
 
 Garcia-Guzman P (2026). *ebrdify: A handy function to make your data
-EBRD-friendly*. R package version 0.5.1,
+EBRD-friendly*. R package version 0.5.2,
 <https://pablogguz.github.io/ebrdify/>.
 
     @Manual{,
       title = {ebrdify: A handy function to make your data EBRD-friendly},
       author = {Pablo Garcia-Guzman},
       year = {2026},
-      note = {R package version 0.5.1},
+      note = {R package version 0.5.2},
       url = {https://pablogguz.github.io/ebrdify/},
     }

@@ -18,7 +18,7 @@ library(ebrdify)
 
 # Classify the countries in your data into EBRD groupings.
 # Accepts ISO3, ISO2 or country names (format auto-detected if not given).
-# Adds: ebrd, coo_group, eu_ebrd, coo_group_alt, ebrd_shareholder, comparator_imf
+# Adds: ebrd, coo_group, eu_ebrd, coo_group_alt, comparator_imf
 # (comparator_imf = "EBRD regions" / "Advanced Economies" / "Other EMDEs").
 df <- data.frame(country = c("Kazakhstan", "Poland", "Germany", "Nigeria"))
 ebrdify(df, "country")

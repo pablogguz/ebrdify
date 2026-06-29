@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">ebrdify</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@
 <p>Given a column or vector of country identifiers (ISO3, ISO2, or country names), the package tags each economy with its EBRD classification and can rewrite its name to the official form used in the EBRD Transition Report.</p>
 <p>Public API:</p>
 <ul><li>
-<code>ebrdify(data, var, var_format)</code> — appends classification columns: <code>ebrd</code> (is an EBRD country of operation), <code>coo_group</code> (traditional regional grouping), <code>eu_ebrd</code> (EBRD economy that is also an EU member), <code>coo_group_alt</code> (alternative grouping), <code>ebrd_shareholder</code>, and <code>comparator_imf</code> (a 3-way IMF/WEO bucket: <code>"EBRD regions"</code> / <code>"Advanced Economies"</code> / <code>"Other EMDEs"</code>, mutually exclusive over every resolved economy; built from the IMF WEO Advanced Economies list in <code>comparators.md</code>, <code>.advanced_economies_iso3</code>).</li>
+<code>ebrdify(data, var, var_format)</code> — appends classification columns: <code>ebrd</code> (is an EBRD country of operation), <code>coo_group</code> (traditional regional grouping), <code>eu_ebrd</code> (EBRD economy that is also an EU member), <code>coo_group_alt</code> (alternative grouping), and <code>comparator_imf</code> (a 3-way IMF/WEO bucket: <code>"EBRD regions"</code> / <code>"Advanced Economies"</code> / <code>"Other EMDEs"</code>, mutually exclusive over every resolved economy; built from the IMF WEO Advanced Economies list in <code>comparators.md</code>, <code>.advanced_economies_iso3</code>).</li>
 <li>
 <code>list_ebrd(what, group)</code> — returns the full list of EBRD economies as ISO3 codes, official names, or both; optionally filtered to one <code>coo_group</code>.</li>
 <li>
@@ -57,13 +57,12 @@
 <div class="section level3">
 <h3 id="gotchas--must-not-break-facts">Gotchas / must-not-break facts<a class="anchor" aria-label="anchor" href="#gotchas--must-not-break-facts"></a></h3>
 <ul><li>
-<strong>Russia, Belarus and Cyprus are NOT EBRD economies</strong> and must never appear in EBRD groupings (Russia/Belarus/Cyprus do appear in the shareholder list).</li>
+<strong>Russia, Belarus and Cyprus are NOT EBRD economies</strong> and must never appear in EBRD groupings (they classify as comparators in <code>comparator_imf</code>).</li>
 <li>
-<strong>Czechia and Greece were removed as EBRD countries of operation in 2026</strong> (NEWS 0.4.3–0.4.4). They are no longer in any grouping, but Czechia/Greece remain valid comparator names and remain EBRD <em>shareholders</em>.</li>
+<strong>Czechia and Greece were removed as EBRD countries of operation in 2026</strong> (NEWS 0.4.3–0.4.4). They are no longer in any grouping, but Czechia/Greece remain valid comparator names and fall under <code>"Advanced Economies"</code>.</li>
 <li>
 <strong>Kosovo</strong>: the ISO 3166-1 alpha-3 code is <code>XKX</code>, but EBRD also uses <code>KOS</code>. Internally everything is normalised to <code>XKX</code> (see <code>.to_iso3c()</code>), so either input code classifies correctly.</li>
 <li>There are <strong>41 EBRD economies</strong>. Türkiye is its own region — not part of any traditional grouping.</li>
-<li>The shareholder list intentionally includes non-country entities (<code>EIB</code>, <code>EUU</code>) and non-COO shareholders; it is broader than the 41 economies.</li>
 </ul></div>
 </div>
 <div class="section level2">

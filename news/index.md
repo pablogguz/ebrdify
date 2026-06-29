@@ -1,5 +1,14 @@
 # Changelog
 
+## ebrdify 0.5.2
+
+- Removed the `ebrd_shareholder` column from
+  [`ebrdify()`](https://pablogguz.github.io/ebrdify/reference/ebrdify.md).
+  The shareholder classification added little value, so
+  [`ebrdify()`](https://pablogguz.github.io/ebrdify/reference/ebrdify.md)
+  now returns five classification columns: `ebrd`, `coo_group`,
+  `eu_ebrd`, `coo_group_alt`, and `comparator_imf`.
+
 ## ebrdify 0.5.1
 
 - [`ebrdify()`](https://pablogguz.github.io/ebrdify/reference/ebrdify.md)
