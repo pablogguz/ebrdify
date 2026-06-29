@@ -1,11 +1,11 @@
 {smcl}
-*! version 1.0.0 2024-07-05
+*! version 1.1.0 2026-06-29
 
 help for ebrdify
 
 Title
 ------
-    ebrdify -- Create dummy variable for EBRD countries and categorize regions
+    ebrdify -- Classify countries into EBRD groupings
 
 Syntax
 ------
@@ -13,9 +13,23 @@ Syntax
 
 Description
 ------------
-    `ebrdify' creates a dummy variable indicating whether the input variable 
-    (country code or country name) corresponds to an EBRD country. Additionally,
-    it creates a categorical variable indicating the region of the country.
+    `ebrdify' takes a string variable of country identifiers (ISO3C, ISO2C, or
+    country name) and adds six classification variables, following the official
+    EBRD / Transition Report classification:
+
+        ebrd              1 if an EBRD country of operation, 0 otherwise
+        coo_group         traditional EBRD regional grouping
+        eu_ebrd           1 if an EBRD economy that is also an EU member
+        coo_group_alt     alternative EBRD grouping
+        ebrd_shareholder  1 if an EBRD shareholder, 0 otherwise
+        comparator_imf    IMF/WEO comparator bucket: "EBRD regions" (any EBRD
+                          economy), "Advanced Economies" (non-EBRD advanced
+                          economy), or "Other EMDEs" (every other resolved
+                          economy)
+
+    Naming and groupings follow Annex I of the EBRD OCE Transition Report style
+    guide. As of 2026, Czechia and Greece are no longer EBRD economies; in
+    comparator_imf they fall under "Advanced Economies".
 
 Options
 -------

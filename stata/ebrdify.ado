@@ -9,7 +9,7 @@ program define ebrdify
     }
     
 	* Ensure variables do not exist
-        foreach var in ebrd coo_group eu_ebrd coo_group_alt {
+        foreach var in ebrd coo_group eu_ebrd coo_group_alt ebrd_shareholder comparator_imf {
             capture confirm variable `var'
             if (!_rc) {
                 di as error "Column '`var'' already in the dataset. Replacing..."
@@ -140,8 +140,41 @@ program define ebrdify
     }
 
     * Label the coo_group_alt variable
-    label define coo_group_alt 1 "EBRD EU" 2 "Former Soviet Union + Mongolia" 3 "Western Balkans" 4 "Southern and Eastern Mediterranean" 5 "Turkiye" 6 "Sub-Saharan Africa"
+    label define coo_group_alt 1 "EU-EBRD" 2 "Former Soviet Union + Mongolia" 3 "Western Balkans" 4 "SEMED" 5 "Türkiye" 6 "Sub-Saharan Africa"
     label values coo_group_alt coo_group_alt
+
+    * Create the ebrd_shareholder variable
+    generate ebrd_shareholder = 0 `if'
+
+    * Define the list of EBRD shareholders in iso3c format (broader than the COOs:
+    * includes non-COO shareholders such as Russia, Belarus, Cyprus, Czechia and
+    * Greece, and the institutional members EIB and EUU)
+    local shareholders "ALB DZA ARM AUS AUT AZE BLR BEL BIH BGR CAN CHN HRV CYP CZE DNK EGY EST EIB EUU FIN FRA GEO DEU GRC HUN ISL IND IRL ISR ITA JPN JOR KAZ KOR XKX KGZ LVA LBN LBY LIE LTU LUX MLT MEX MDA MNG MNE MAR NLD NZL MKD NOR POL PRT ROU RUS SMR SRB SVK SVN ESP SWE CHE TJK TUN TUR TKM UKR ARE GBR USA UZB NGA BEN CIV KEN SEN IRQ GHA"
+
+    foreach country in `shareholders' {
+        replace ebrd_shareholder = 1 if iso3c == "`country'" `if'
+    }
+
+    * Create the comparator_imf variable: a mutually exclusive IMF/WEO bucket over
+    * every resolved economy. EBRD economies -> "EBRD regions"; non-EBRD advanced
+    * economies -> "Advanced Economies"; all other resolved economies -> "Other
+    * EMDEs". The advanced list is the IMF WEO Advanced Economies group (TR style
+    * guide, groupings/comparators.md).
+    generate comparator_imf = . `if'
+
+    local advanced "AND AUS AUT BEL CAN CYP CZE DNK FIN FRA DEU GRC HKG ISL IRL ISR ITA JPN KOR LUX MAC MLT NLD NZL NOR PRT PRI SMR SGP ESP SWE CHE TWN GBR USA"
+
+    * 3 = Other EMDEs for every resolved economy...
+    replace comparator_imf = 3 if !missing(iso3c) `if'
+    * ...2 = Advanced Economies for the IMF advanced list...
+    foreach country in `advanced' {
+        replace comparator_imf = 2 if iso3c == "`country'" `if'
+    }
+    * ...1 = EBRD regions takes precedence for any EBRD economy.
+    replace comparator_imf = 1 if ebrd == 1 `if'
+
+    label define comparator_imf 1 "EBRD regions" 2 "Advanced Economies" 3 "Other EMDEs"
+    label values comparator_imf comparator_imf
 
     * Print unmatched entries
     local unmatched = ""
