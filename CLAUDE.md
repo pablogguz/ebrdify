@@ -36,9 +36,20 @@ style guide** (`~/Documents/GitHub/tr-style-guide`, section
 `groupings/comparators.md`). When that guide changes, update
 [R/lookups.R](https://pablogguz.github.io/ebrdify/R/lookups.R) — it is
 the single in-package source of truth from which every lookup table is
-derived. Keep the Stata implementation
-([stata/ebrdify.ado](https://pablogguz.github.io/ebrdify/stata/ebrdify.ado))
-in sync manually.
+derived. Keep the Stata implementation in sync manually:
+[stata/ebrdify.ado](https://pablogguz.github.io/ebrdify/stata/ebrdify.ado),
+[stata/canonise.ado](https://pablogguz.github.io/ebrdify/stata/canonise.ado)
+(mirrors
+[`canonise()`](https://pablogguz.github.io/ebrdify/reference/canonise.md)),
+and
+[stata/list_ebrd.ado](https://pablogguz.github.io/ebrdify/stata/list_ebrd.ado)
+(mirrors
+[`list_ebrd()`](https://pablogguz.github.io/ebrdify/reference/list_ebrd.md)).
+The Stata ports use the `isocodes` package for identifier→ISO3
+conversion and inline `replace` lookups (no bundled `.dta`); a
+cross-port parity check (R vs Stata, value-for-value) confirms
+`ebrdify`/`canonise` agree on matched economies. Stata is versioned
+separately (`stata/ebrdify.pkg`), not in `NEWS.md`.
 
 ### Naming rules (TR house style)
 
