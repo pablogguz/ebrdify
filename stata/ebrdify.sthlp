@@ -14,14 +14,13 @@ Syntax
 Description
 ------------
     `ebrdify' takes a string variable of country identifiers (ISO3C, ISO2C, or
-    country name) and adds six classification variables, following the official
+    country name) and adds five classification variables, following the official
     EBRD / Transition Report classification:
 
         ebrd              1 if an EBRD country of operation, 0 otherwise
         coo_group         traditional EBRD regional grouping
         eu_ebrd           1 if an EBRD economy that is also an EU member
         coo_group_alt     alternative EBRD grouping
-        ebrd_shareholder  1 if an EBRD shareholder, 0 otherwise
         comparator_imf    IMF/WEO comparator bucket: "EBRD regions" (any EBRD
                           economy), "Advanced Economies" (non-EBRD advanced
                           economy), or "Other EMDEs" (every other resolved

@@ -15,7 +15,7 @@ Public API:
 - `ebrdify(data, var, var_format)` — appends classification columns: `ebrd`
   (is an EBRD country of operation), `coo_group` (traditional regional grouping),
   `eu_ebrd` (EBRD economy that is also an EU member), `coo_group_alt`
-  (alternative grouping), `ebrd_shareholder`, and `comparator_imf` (a 3-way
+  (alternative grouping), and `comparator_imf` (a 3-way
   IMF/WEO bucket: `"EBRD regions"` / `"Advanced Economies"` / `"Other EMDEs"`,
   mutually exclusive over every resolved economy; built from the IMF WEO Advanced
   Economies list in `comparators.md`, `.advanced_economies_iso3`).
@@ -57,17 +57,15 @@ is versioned separately (`stata/ebrdify.pkg`), not in `NEWS.md`.
 ### Gotchas / must-not-break facts
 
 - **Russia, Belarus and Cyprus are NOT EBRD economies** and must never appear in
-  EBRD groupings (Russia/Belarus/Cyprus do appear in the shareholder list).
+  EBRD groupings (they classify as comparators in `comparator_imf`).
 - **Czechia and Greece were removed as EBRD countries of operation in 2026**
   (NEWS 0.4.3–0.4.4). They are no longer in any grouping, but Czechia/Greece
-  remain valid comparator names and remain EBRD *shareholders*.
+  remain valid comparator names and fall under `"Advanced Economies"`.
 - **Kosovo**: the ISO 3166-1 alpha-3 code is `XKX`, but EBRD also uses `KOS`.
   Internally everything is normalised to `XKX` (see `.to_iso3c()`), so either
   input code classifies correctly.
 - There are **41 EBRD economies**. Türkiye is its own region — not part of any
   traditional grouping.
-- The shareholder list intentionally includes non-country entities (`EIB`,
-  `EUU`) and non-COO shareholders; it is broader than the 41 economies.
 
 ## Architecture
 

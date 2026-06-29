@@ -23,8 +23,6 @@
 #'     \item{`eu_ebrd`}{`1` if both an EBRD economy and an EU member, else `0`
 #'       (`NA` if unmatched).}
 #'     \item{`coo_group_alt`}{Alternative EBRD grouping, or `NA`.}
-#'     \item{`ebrd_shareholder`}{`1` if an EBRD shareholder, else `0` (`NA` if
-#'       unmatched).}
 #'     \item{`comparator_imf`}{IMF/WEO comparator bucket, one of `"EBRD regions"`
 #'       (any EBRD economy), `"Advanced Economies"` (non-EBRD advanced economy,
 #'       e.g. Germany, Czechia, Greece), or `"Other EMDEs"` (every other resolved
@@ -43,8 +41,7 @@
 #' # Using a vector, with auto-detected format
 #' ebrdify(var = c("Kazakhstan", "Croatia", "Narnia", "United States"))
 ebrdify <- function(data = NULL, var, var_format = NULL) {
-  new_cols <- c("ebrd", "coo_group", "eu_ebrd", "coo_group_alt",
-                "ebrd_shareholder", "comparator_imf")
+  new_cols <- c("ebrd", "coo_group", "eu_ebrd", "coo_group_alt", "comparator_imf")
 
   # Resolve the identifier vector and warn about columns/names we will overwrite.
   if (!is.null(data)) {
@@ -79,7 +76,6 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
       coo_group = rep(NA_character_, n),
       eu_ebrd = rep(NA_integer_, n),
       coo_group_alt = rep(NA_character_, n),
-      ebrd_shareholder = rep(NA_integer_, n),
       comparator_imf = rep(NA_character_, n),
       stringsAsFactors = FALSE,
       row.names = NULL
@@ -110,9 +106,6 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
   ebrd[!valid] <- NA_integer_
   eu <- as.integer(!is.na(.eu_lookup[iso]))
   eu[!valid] <- NA_integer_
-  shareholder <- as.integer(!is.na(.shareholder_lookup[iso]))
-  shareholder[!valid] <- NA_integer_
-
   # IMF/WEO comparator bucket, mutually exclusive over every resolved economy:
   # EBRD economies -> "EBRD regions"; non-EBRD advanced -> "Advanced Economies";
   # all other resolved economies -> "Other EMDEs". EBRD is assigned last so it
@@ -129,7 +122,6 @@ ebrdify <- function(data = NULL, var, var_format = NULL) {
     coo_group = .region_lookup[iso],
     eu_ebrd = eu,
     coo_group_alt = .alt_lookup[iso],
-    ebrd_shareholder = shareholder,
     comparator_imf = comparator_imf,
     stringsAsFactors = FALSE,
     row.names = NULL

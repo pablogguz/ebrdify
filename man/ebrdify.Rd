@@ -27,8 +27,6 @@ if the identifier could not be matched.}
 \item{\code{eu_ebrd}}{\code{1} if both an EBRD economy and an EU member, else \code{0}
 (\code{NA} if unmatched).}
 \item{\code{coo_group_alt}}{Alternative EBRD grouping, or \code{NA}.}
-\item{\code{ebrd_shareholder}}{\code{1} if an EBRD shareholder, else \code{0} (\code{NA} if
-unmatched).}
 \item{\code{comparator_imf}}{IMF/WEO comparator bucket, one of \code{"EBRD regions"}
 (any EBRD economy), \code{"Advanced Economies"} (non-EBRD advanced economy,
 e.g. Germany, Czechia, Greece), or \code{"Other EMDEs"} (every other resolved

@@ -33,9 +33,6 @@ test_that("internal lookups are mutually consistent", {
   expect_equal(nrow(tbl), 41)
   expect_false(any(duplicated(tbl$iso3c)))
   expect_false(any(duplicated(tbl$name)))
-  # every economy is also a shareholder except West Bank and Gaza, which is an
-  # EBRD economy of operation but not a sovereign shareholder
-  expect_equal(setdiff(tbl$iso3c, ebrdify:::.shareholder_iso3c), "PSE")
   # name override covers every economy
   expect_true(all(tbl$iso3c %in% names(ebrdify:::.tr_name_override)))
 })

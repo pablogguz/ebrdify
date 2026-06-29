@@ -129,25 +129,9 @@ test_that("missing values are handled correctly", {
   expect_true(is.na(result$ebrd[is.na(test_data$country_code)]))
   expect_true(is.na(result$coo_group[is.na(test_data$country_code)]))
   expect_true(is.na(result$eu_ebrd[is.na(test_data$country_code)]))
-  expect_true(is.na(result$ebrd_shareholder[is.na(test_data$country_code)]))
-  
+
   # Check empty string handling - use all() to handle multiple empty strings
   expect_true(all(is.na(result$ebrd[test_data$country_code == ""])))
-})
-
-# Test shareholder classification
-test_that("shareholder classification is correct", {
-  test_data <- data.frame(
-    country_code = c("GBR", "USA", "CHN", "BRA", "AUS"),
-    stringsAsFactors = FALSE
-  )
-  result <- ebrdify(test_data, "country_code", "iso3c")
-  
-  expect_equal(result$ebrd_shareholder[result$country_code == "GBR"], 1)
-  expect_equal(result$ebrd_shareholder[result$country_code == "USA"], 1)
-  expect_equal(result$ebrd_shareholder[result$country_code == "CHN"], 1)
-  expect_equal(result$ebrd_shareholder[result$country_code == "BRA"], 0)
-  expect_equal(result$ebrd_shareholder[result$country_code == "AUS"], 1)
 })
 
 # Test data structure preservation
@@ -199,7 +183,6 @@ test_that("Kosovo classifies from either KOS or XKX as iso3c", {
     expect_equal(result$ebrd, 1)
     expect_equal(result$coo_group, "South-eastern Europe")
     expect_equal(result$coo_group_alt, "Western Balkans")
-    expect_equal(result$ebrd_shareholder, 1)
   }
 })
 
@@ -210,8 +193,6 @@ test_that("Czechia and Greece are not EBRD economies", {
   expect_true(all(is.na(result$coo_group)))
   expect_true(all(is.na(result$coo_group_alt)))
   expect_equal(result$eu_ebrd, c(0, 0))
-  # ...but they remain EBRD shareholders
-  expect_equal(result$ebrd_shareholder, c(1, 1))
 })
 
 # Russia, Belarus and Cyprus must never be EBRD economies
@@ -219,8 +200,6 @@ test_that("Russia, Belarus and Cyprus are excluded as economies", {
   result <- ebrdify(var = c("RUS", "BLR", "CYP"), var_format = "iso3c")
   expect_equal(result$ebrd, c(0, 0, 0))
   expect_true(all(is.na(result$coo_group)))
-  # but all three are shareholders
-  expect_equal(result$ebrd_shareholder, c(1, 1, 1))
 })
 
 # Every EBRD economy is fully classified

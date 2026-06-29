@@ -93,23 +93,6 @@
   .ebrd_economies$iso3c[.ebrd_economies$eu_ebrd]
 )
 
-# EBRD shareholders (ISO3). Broader than the 41 economies: includes non-COO
-# shareholders (e.g. Russia, Belarus, Cyprus, Czechia, Greece) and non-country
-# institutional members (EIB = European Investment Bank, EUU = European Union).
-.shareholder_iso3c <- c(
-  "ALB", "DZA", "ARM", "AUS", "AUT", "AZE", "BLR", "BEL", "BIH", "BGR",
-  "CAN", "CHN", "HRV", "CYP", "CZE", "DNK", "EGY", "EST", "EIB", "EUU",
-  "FIN", "FRA", "GEO", "DEU", "GRC", "HUN", "ISL", "IND", "IRL", "ISR",
-  "ITA", "JPN", "JOR", "KAZ", "KOR", "XKX", "KGZ", "LVA", "LBN", "LBY",
-  "LIE", "LTU", "LUX", "MLT", "MEX", "MDA", "MNG", "MNE", "MAR", "NLD",
-  "NZL", "MKD", "NOR", "POL", "PRT", "ROU", "RUS", "SMR", "SRB", "SVK",
-  "SVN", "ESP", "SWE", "CHE", "TJK", "TUN", "TUR", "TKM", "UKR", "ARE",
-  "GBR", "USA", "UZB", "NGA", "BEN", "CIV", "KEN", "SEN", "IRQ", "GHA"
-)
-.shareholder_lookup <- stats::setNames(
-  rep(TRUE, length(.shareholder_iso3c)), .shareholder_iso3c
-)
-
 # IMF WEO "Advanced Economies" (groupings/comparators.md, April 2025), used to
 # build the `comparator_imf` column. This is the comparator list, which already
 # excludes EBRD economies (Croatia, Estonia, Latvia, Lithuania, Slovak Republic,

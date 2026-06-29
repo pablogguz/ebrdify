@@ -1,3 +1,10 @@
+# ebrdify 0.5.2
+
+* Removed the `ebrd_shareholder` column from `ebrdify()`. The shareholder
+  classification added little value, so `ebrdify()` now returns five
+  classification columns: `ebrd`, `coo_group`, `eu_ebrd`, `coo_group_alt`, and
+  `comparator_imf`.
+
 # ebrdify 0.5.1
 
 * `ebrdify()` now adds a `comparator_imf` column classifying every economy into
